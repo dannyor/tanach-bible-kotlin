@@ -8,4 +8,4 @@
  */
 
 rootProject.name = 'tanach-bible-kotlin'
-include('tanach-bible-api')
+include('tanach-bible-api', 'tanach-bible-json')
