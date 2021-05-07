@@ -44,6 +44,6 @@ fun main() {
     val concordance = ConcordanceFromBible(bible)
     val result = concordance.find("תורה")
     result.forEach {
-        println(it)
+        println("${it.getText()} ${it.getLocation().toStringHeb()}")
     }
 }

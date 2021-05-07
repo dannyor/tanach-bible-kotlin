@@ -66,7 +66,11 @@ interface Verse : Iterator<dnl.bible.api.Verse> {
     }
 }
 
-data class VerseLocation(val book: BibleBook, val chapterIndex: Int, val verseIndex: Int)
+data class VerseLocation(val book: BibleBook, val chapterIndex: Int, val verseIndex: Int) {
+    fun toStringHeb() : String {
+        return "[${book.hebrewName}, $chapterIndex, $verseIndex]"
+    }
+}
 
 /**
  * Describes an inclusive range of verses.
