@@ -58,7 +58,7 @@ enum class BibleBook(val englishName: String, val hebrewName: String, vararg par
     PSALMS("Psalms", "תהילים"),
     PROVERBS("Proverbs", "משלי"),
     JOB("Job", "איוב"),
-    SONG_OF_SONGS("Song of songs", "שיר השירים"),
+    SONG_OF_SONGS("Song of Songs", "שיר השירים"),
     RUTH("Ruth", "רות"),
     LAMENTATIONS("Lamentations", "איכה"),
     ECCLESIASTES("Ecclesiastes", "קהלת"),

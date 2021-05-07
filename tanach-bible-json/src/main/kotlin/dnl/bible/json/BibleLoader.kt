@@ -10,6 +10,8 @@ import java.io.File
 
 object BibleLoader {
     fun loadFrom(f: File) : Bible {
+        if(!f.exists())
+            throw java.lang.IllegalArgumentException("File ${f.absolutePath} does not exist")
         if(f.name.endsWith(".json")) {
             val fileContents = FileUtils.readFileToString(f, "UTF-16")
             return Json { prettyPrint = true }.decodeFromString(fileContents)

@@ -1,0 +1,10 @@
+plugins {
+    id 'proj.kotlin-library-conventions'
+}
+
+dependencies {
+    implementation project(':tanach-bible-json')
+
+    implementation 'ch.qos.logback:logback-classic:1.2.3'
+//    implementation 'ch.qos.logback:logback-core:1.2.3'
+}

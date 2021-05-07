@@ -13,6 +13,9 @@ interface Parasha {
 
 interface Bible {
     fun getBook(book: BibleBook): Book
+    fun getVerse(verseLocation: VerseLocation): Verse {
+        return getBook(verseLocation.book).getChapter(verseLocation.chapterIndex).getVerse(verseLocation.verseIndex)
+    }
     fun getVerseRange(verseRange: VerseRange): Iterator<Verse> {
         return VerseRangeIterator(getBook(verseRange.start.book), verseRange)
     }

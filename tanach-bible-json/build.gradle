@@ -6,7 +6,7 @@ plugins {
 version = "1.0"
 
 dependencies {
-    implementation project(':tanach-bible-api')
+    api project(':tanach-bible-api')
     implementation 'org.apache.commons:commons-lang3:3.11'
     implementation 'commons-io:commons-io:2.8.0'
     implementation 'net.java.truevfs:truevfs-profile-full:0.14.0'
