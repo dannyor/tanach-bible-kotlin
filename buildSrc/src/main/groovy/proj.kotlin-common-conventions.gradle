@@ -1,0 +1,33 @@
+
+plugins {
+    id 'org.jetbrains.kotlin.jvm' // <1>
+}
+
+repositories {
+    mavenCentral() // <2>
+}
+
+dependencies {
+    constraints {
+        implementation 'org.apache.commons:commons-text:1.9' // <3>
+
+        implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
+    }
+
+    implementation platform('org.jetbrains.kotlin:kotlin-bom') // <4>
+
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8' // <5>
+
+    implementation platform('org.jetbrains.kotlin:kotlin-bom') // <6>
+
+    implementation "org.slf4j:slf4j-api:1.7.30"
+
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.1' // <7>
+
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine' // <8>
+}
+
+tasks.named('test') {
+    useJUnitPlatform() // <9>
+}

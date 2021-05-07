@@ -1,0 +1,10 @@
+
+plugins {
+    id 'proj.kotlin-common-conventions' // <1>
+
+    id 'java-library' // <2>
+}
+
+dependencies {
+    testImplementation("org.slf4j:slf4j-simple:1.7.30")
+}
