@@ -23,14 +23,10 @@ class BibleApiTest {
     }
 
     @Test
-    fun testVerseRangeFactory() {
-        val range = VerseRangeFactory.newVerseRange("Numbers 1:1-1:5")
-        assertEquals(BibleBook.NUMBERS, range.start.book)
-        assertEquals(1, range.start.chapterIndex)
-        assertEquals(1, range.start.verseIndex)
-        assertEquals(BibleBook.NUMBERS, range.end.book)
-        assertEquals(1, range.end.chapterIndex)
-        assertEquals(5, range.end.verseIndex)
+    fun testChapterRange() {
+//        val chapter = bible.getBook(BibleBook.DANIEL).getChapter(1)
+//        val verseList = chapter.iterator().asSequence().toList()
+//        assertEquals(20, verseList.size)
     }
 
     @Test

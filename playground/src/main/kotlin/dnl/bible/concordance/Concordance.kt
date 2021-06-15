@@ -42,7 +42,7 @@ class ConcordanceFromBible(val bible: Bible): Concordance {
 fun main() {
     val bible = BibleLoader.loadFrom(File("../json-bible-hebrew/bible-json-files/bible-just_letters-1.0.zip"))
     val concordance = ConcordanceFromBible(bible)
-    val result = concordance.find("תורה")
+    val result = concordance.find("אהבה")
     result.forEach {
         println("${it.getText()} ${it.getLocation().toStringHeb()}")
     }

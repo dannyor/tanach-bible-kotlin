@@ -1,10 +1,23 @@
 
 plugins {
-    id 'proj.kotlin-common-conventions' // <1>
+    id 'proj.kotlin-common-conventions'
 
-    id 'java-library' // <2>
+    id 'java-library'
+    id 'maven-publish'
 }
 
 dependencies {
     testImplementation("org.slf4j:slf4j-simple:1.7.30")
+}
+
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+    repositories {
+        mavenLocal()
+    }
 }
