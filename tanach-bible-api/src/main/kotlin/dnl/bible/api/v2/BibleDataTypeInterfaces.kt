@@ -17,9 +17,9 @@ interface Parasha {
 
 interface Bible {
     fun getBook(book: BibleBook): Book
-    fun getVerse(verseLocation: VerseLocation): Verse {
-        return getBook(verseLocation.book).getChapter(verseLocation.chapterIndex).verses[verseLocation.verseIndex-1]
-    }
+//    fun getVerse(verseLocation: VerseLocation): Verse {
+//        return getBook(verseLocation.book).getChapter(verseLocation.chapterIndex).verses[verseLocation.verseIndex-1]
+//    }
 //    fun getVerseRange(verseRange: VerseRange): Iterator<Verse> {
 //        return VerseRangeIterator(getBook(verseRange.start.book), verseRange)
 //    }
@@ -36,9 +36,9 @@ interface Book {
      */
     fun getChapter(index: Int): Chapter
 
-    fun getVerse(location: VerseLocation): Verse {
-        return getChapter(location.chapterIndex).verses[location.verseIndex-1]
-    }
+//    fun getVerse(location: VerseLocation): Verse {
+//        return getChapter(location.chapterIndex).verses[location.verseIndex-1]
+//    }
 
 //    fun getVerseRange(verseRange: VerseRange): Iterator<Verse> {
 //        return VerseRangeIterator(this, verseRange)
@@ -50,9 +50,8 @@ interface Humash : Book {
 }
 
 interface Chapter {
-    val verses: List<Verse>
+    val verses: List<String>
     fun getParent(): Book
-    fun getIndex(): Int
 
     /**
      * Gets a verse by a (1 based) index. That is, first verse index is 1.
@@ -63,13 +62,13 @@ interface Chapter {
 }
 
 interface Verse {
-    fun getParent(): Chapter
-    fun getIndex(): Int
+//    fun getParent(): Chapter
+//    val index: Int
     val words: List<String>
-    fun getText(): String
-    fun getLocation(): VerseLocation {
-        return VerseLocation(getParent().getParent().bookEnumVal, getParent().getIndex(), getIndex())
-    }
+//    fun getText(): String
+//    fun getLocation(): VerseLocation {
+//        return VerseLocation(getParent().getParent().bookEnumVal, getParent().getIndex(), index)
+//    }
 }
 
 data class VerseLocation(val book: BibleBook, val chapterIndex: Int, val verseIndex: Int) {

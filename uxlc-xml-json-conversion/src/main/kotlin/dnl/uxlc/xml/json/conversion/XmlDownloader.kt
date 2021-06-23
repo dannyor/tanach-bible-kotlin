@@ -6,8 +6,6 @@
 package dnl.uxlc.xml.json.conversion
 
 import org.apache.commons.io.FileUtils
-import org.apache.commons.io.IOUtils
-import org.apache.commons.lang3.StringUtils
 import org.apache.http.HttpResponse
 import org.apache.http.client.HttpClient
 import org.apache.http.client.methods.HttpGet
@@ -15,7 +13,6 @@ import org.apache.http.impl.client.HttpClientBuilder
 import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
-import java.io.InputStreamReader
 
 class Downloader {
     val client: HttpClient = HttpClientBuilder.create().build()

@@ -33,39 +33,12 @@ data class Book(
 
 @Serializable
 data class Chapter(
-    override val verses: List<dnl.bible.api.v2.Verse>,
-    val chapterIndex: Int,
-    val numOfVerses: Int,
+    override val verses: List<String>
 ) : dnl.bible.api.v2.Chapter {
-
     @kotlinx.serialization.Transient
     lateinit var parentBook: Book
 
     override fun getParent(): dnl.bible.api.v2.Book {
         return parentBook
-    }
-
-    override fun getIndex(): Int {
-        return chapterIndex
-    }
-}
-
-@Serializable
-data class Verse(
-    private val index: Int,
-    override val words: List<String>
-) : dnl.bible.api.v2.Verse {
-    lateinit var parent: Chapter
-
-    override fun getParent(): dnl.bible.api.v2.Chapter {
-        return parent
-    }
-
-    override fun getIndex(): Int {
-        return index
-    }
-
-    override fun getText(): String {
-        return StringUtils.join(words, ' ')
     }
 }
