@@ -19,8 +19,8 @@ object VerseRangeFactory {
 
     fun newSingleChapterRange(book: Book, chapterIndex: Int): VerseRange {
         return VerseRange(
-            VerseLocation(book.bookEnumVal, chapterIndex, 1),
-            VerseLocation(book.bookEnumVal, chapterIndex, book.getChapter(chapterIndex).verses.size),
+            VerseLocation(book.getBookEnum(), chapterIndex, 1),
+            VerseLocation(book.getBookEnum(), chapterIndex, book.getChapter(chapterIndex).getNumOfVerses()),
         )
     }
 }

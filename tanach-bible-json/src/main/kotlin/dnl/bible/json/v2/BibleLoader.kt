@@ -1,5 +1,6 @@
 package dnl.bible.json.v2
 
+import dnl.bible.json.BibleImpl
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import net.java.truevfs.access.TFile
@@ -9,15 +10,15 @@ import java.io.File
 
 object BibleLoader {
 
-    fun loadJustLettersBible(bibleZipFile: File): Bible {
+    fun loadJustLettersBible(bibleZipFile: File): dnl.bible.api.v2.Bible {
         return loadBible(bibleZipFile, true)
     }
 
-    fun loadBibleWithNikudAndTeamim(bibleZipFile: File): Bible {
+    fun loadBibleWithNikudAndTeamim(bibleZipFile: File): dnl.bible.api.v2.Bible {
         return loadBible(bibleZipFile, false)
     }
 
-    private fun loadBible(bibleZipFile: File, justLetters: Boolean): Bible {
+    private fun loadBible(bibleZipFile: File, justLetters: Boolean): dnl.bible.api.v2.Bible {
         fun resolveBibleFile(justLetters: Boolean): TFile {
             TFile(bibleZipFile).listFiles()!!.forEach {
                 if (justLetters && it.name.contains("just"))
@@ -36,7 +37,8 @@ object BibleLoader {
             val istream = TFileInputStream(tFile)
             istream.use {
                 val fileContents = IOUtils.toString(istream, "UTF-16")
-                return Json { prettyPrint = true }.decodeFromString(fileContents)
+                val bible:Bible = Json { prettyPrint = true }.decodeFromString(fileContents)
+                return BibleImpl(bible)
             }
         }
         throw IllegalArgumentException("Only json or zipped json are supported")

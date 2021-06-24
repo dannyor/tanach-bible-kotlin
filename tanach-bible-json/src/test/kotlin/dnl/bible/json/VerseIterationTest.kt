@@ -2,9 +2,7 @@ package dnl.bible.json
 
 import dnl.bible.api.BibleBook
 import dnl.bible.api.VerseRangeFactory
-import dnl.bible.api.VerseRangeIterator
-import dnl.bible.api.v2.VerseRange
-import dnl.bible.json.v2.Bible
+import dnl.bible.api.v2.Bible
 import dnl.bible.json.v2.BibleLoader
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test

@@ -2,39 +2,37 @@
 
 package dnl.bible.concordance
 
-import dnl.bible.api.Bible
 import dnl.bible.api.BibleBook
-import dnl.bible.api.Verse
-import dnl.bible.api.VerseLocation
 import dnl.bible.api.v2.Bible
+import dnl.bible.api.v2.Verse
 import dnl.bible.api.v2.VerseLocation
-import dnl.bible.json.BibleLoader
+import dnl.bible.json.v2.BibleLoader
 import org.slf4j.LoggerFactory
 import java.io.File
 
 interface Concordance {
-    fun find(word:String) : List<VerseLocation>
+    fun find(word:String) : List<Verse>
 }
 
 class ConcordanceFromBible(val bible: Bible): Concordance {
     val logger = LoggerFactory.getLogger(javaClass)
 
-    override fun find(word: String): List<VerseLocation> {
+    override fun find(word: String): List<Verse> {
         logger.info("Find '$word'")
 
-        val result = mutableListOf<VerseLocation>()
+        val result = mutableListOf<Verse>()
 
-        BibleBook.values().forEach {
-            logger.info("start processing $it")
-            val bookResult = mutableListOf<VerseLocation>()
-            var verse = bible.getBook(it).getVerse(VerseLocation(it, 1, 1))
-            while (verse.hasNext()) {
+        BibleBook.values().forEach { book ->
+            logger.info("start processing $book")
+            val bookResult = mutableListOf<Verse>()
+            var iterator = bible.getBook(book).getIterator()
+            while (iterator.hasNext()) {
+                val verse = iterator.next()
                 if(verse.getText().contains(word))
                     bookResult.add(verse)
-                verse = verse.next()
             }
             result.addAll(bookResult)
-            logger.info("Found ${bookResult.size} results i book $it")
+            logger.info("Found ${bookResult.size} results i book $book")
         }
         return result
     }
@@ -42,7 +40,8 @@ class ConcordanceFromBible(val bible: Bible): Concordance {
 }
 
 fun main() {
-    val bible = BibleLoader.loadFrom(File("../json-bible-hebrew/bible-json-files/bible-just_letters-1.0.zip"))
+    val bible = BibleLoader.loadJustLettersBible(
+        File("./uxlc-xml-json-conversion/json-output/uxlc-1.2/bible-just_letters-1.1.zip"))
     val concordance = ConcordanceFromBible(bible)
     val result = concordance.find("אהבה")
     result.forEach {

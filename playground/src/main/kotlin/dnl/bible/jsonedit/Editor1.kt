@@ -1,9 +1,10 @@
 package dnl.bible.jsonedit
 
-import dnl.bible.api.Bible
-import dnl.bible.api.Chapter
-import dnl.bible.json.BibleLoader
+import dnl.bible.api.v2.Bible
+import dnl.bible.api.v2.Chapter
+import dnl.bible.json.v2.BibleLoader
 import java.awt.BorderLayout
+import java.awt.ComponentOrientation
 import java.awt.Dimension
 import java.awt.EventQueue
 import java.awt.event.ActionEvent
@@ -63,7 +64,9 @@ class Editor1 : JFrame("") {
         val node = bibleChaptersTree.lastSelectedPathComponent
         if(node is ChapterNode) {
             val chapterAsText = getChapterAsText((node as ChapterNode).chapter)
+            editorPanel.editorPane.componentOrientation = ComponentOrientation.RIGHT_TO_LEFT
             editorPanel.editorPane.text = chapterAsText
+            editorPanel.editorPane.componentOrientation = ComponentOrientation.RIGHT_TO_LEFT
         }
     }
 
@@ -82,19 +85,13 @@ class Editor1 : JFrame("") {
     }
 
     fun openFile(file: File) {
-        bible = BibleLoader.loadFrom(file)
+        bible = BibleLoader.loadJustLettersBible(file)
         bibleChaptersTree.model = BibleTreeModel(bible, DefaultMutableTreeNode(bible))
     }
 
-    fun getChapterAsText(chap:Chapter) : String {
+    private fun getChapterAsText(chap:Chapter) : String {
         val sb = StringBuilder()
-        var verse = chap.getVerse(1)
-
-        while (verse.hasNext()) {
-            sb.append(verse.getText())
-            verse = verse.next()
-            sb.append('\n')
-        }
+        chap.getAllVerses().forEach { sb.append(it.getText()); sb.append('\n') }
         return sb.toString()
     }
 }
@@ -120,7 +117,7 @@ fun main() {
     EventQueue.invokeLater {
         val editor1 = Editor1()
         editor1.size = Dimension(1000,1000)
-        editor1.openFile(File("../json-bible-hebrew/bible-json-files/bible-just_letters-1.0.zip"))
+        editor1.openFile(File("./uxlc-xml-json-conversion/json-output/uxlc-1.2/bible-just_letters-1.1.zip"))
         editor1.isVisible = true
     }
 }

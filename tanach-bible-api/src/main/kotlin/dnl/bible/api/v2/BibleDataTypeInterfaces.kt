@@ -3,6 +3,7 @@ package dnl.bible.api.v2
 import dnl.bible.api.BibleBook
 import dnl.bible.api.HumashEnum
 import dnl.bible.api.ParashaEnum
+import dnl.bible.api.VerseRangeIterator
 
 interface Tora {
     fun getHumash(humash: HumashEnum): Book
@@ -17,33 +18,51 @@ interface Parasha {
 
 interface Bible {
     fun getBook(book: BibleBook): Book
-//    fun getVerse(verseLocation: VerseLocation): Verse {
-//        return getBook(verseLocation.book).getChapter(verseLocation.chapterIndex).verses[verseLocation.verseIndex-1]
-//    }
-//    fun getVerseRange(verseRange: VerseRange): Iterator<Verse> {
-//        return VerseRangeIterator(getBook(verseRange.start.book), verseRange)
-//    }
+    fun getVerse(verseLocation: VerseLocation): Verse {
+        return getBook(verseLocation.book).getChapter(verseLocation.chapterIndex).getVerse(verseLocation.verseIndex - 1)
+    }
+
+    fun getVerseRange(verseRange: VerseRange): Iterator<Verse> {
+        return VerseRangeIterator(getBook(verseRange.start.book), verseRange)
+    }
 }
 
+/**
+ * Note that bible indexes are 1 based.
+ */
 interface Book {
-    val name: String
-    val hebrewName: String
-    val bookEnumVal : BibleBook
-
-//    fun getNumOfChapters():Int
+    fun getName(): String
+    fun getHebrewName(): String
+    fun getBookEnum(): BibleBook
+    fun getNumOfChapters(): Int
 
     /**
      * Gets a chapter by a (1 based) index. That is, first chapter index is 1.
      */
     fun getChapter(index: Int): Chapter
 
-    fun getVerse(location: VerseLocation): String {
-        return getChapter(location.chapterIndex).verses[location.verseIndex-1]
+    fun getVerse(location: VerseLocation): Verse {
+        return getChapter(location.chapterIndex).getVerse(location.verseIndex)
     }
 
-//    fun getVerseRange(verseRange: VerseRange): Iterator<Verse> {
-//        return VerseRangeIterator(this, verseRange)
-//    }
+    fun getVerseRange(verseRange: VerseRange): Iterator<Verse> {
+        return VerseRangeIterator(this, verseRange)
+    }
+
+    /**
+     * Gets the whole book as VerseRange
+     */
+    fun asVerseRange(): VerseRange {
+        val firstVerse = VerseLocation(getBookEnum(), 1, 1)
+        val lastVerse = VerseLocation(getBookEnum(), getNumOfChapters(), lastChapter().getNumOfVerses())
+        return VerseRange(firstVerse, lastVerse)
+    }
+
+    fun getIterator(): Iterator<Verse> {
+        return VerseRangeIterator(this, asVerseRange())
+    }
+
+    fun lastChapter(): Chapter = getChapter(getNumOfChapters())
 }
 
 interface Humash : Book {
@@ -51,22 +70,36 @@ interface Humash : Book {
 }
 
 interface Chapter {
-    val verses: List<String>
     fun getParent(): Book
+    fun getIndex(): Int
+    fun getNumOfVerses(): Int
+    fun getAllVerses(): List<Verse>
+    fun getAllVersesStrings(): List<String>
+    fun getVerse(index: Int): Verse
+
+    fun asVerseRange(): VerseRange {
+        val firstVerse = VerseLocation(getParent().getBookEnum(), getIndex(), 1)
+        val lastVerse = VerseLocation(getParent().getBookEnum(), getIndex(), getNumOfVerses())
+        return VerseRange(firstVerse, lastVerse)
+    }
+
+    fun getIterator(): Iterator<Verse> = VerseRangeIterator(getParent(), asVerseRange())
 }
 
 interface Verse {
-//    fun getParent(): Chapter
-//    val index: Int
-    val words: List<String>
-//    fun getText(): String
-//    fun getLocation(): VerseLocation {
-//        return VerseLocation(getParent().getParent().bookEnumVal, getParent().getIndex(), index)
-//    }
+    fun getParent(): Chapter
+    fun getParentBook(): Book = getParent().getParent()
+    fun getIndex(): Int
+    fun getWords(): List<String>
+    fun getText(): String
+
+    fun getLocation(): VerseLocation {
+        return VerseLocation(getParent().getParent().getBookEnum(), getParent().getIndex(), getIndex())
+    }
 }
 
 data class VerseLocation(val book: BibleBook, val chapterIndex: Int, val verseIndex: Int) {
-    fun toStringHeb() : String {
+    fun toStringHeb(): String {
         return "[${book.hebrewName}, $chapterIndex, $verseIndex]"
     }
 }
@@ -76,7 +109,7 @@ data class VerseLocation(val book: BibleBook, val chapterIndex: Int, val verseIn
  */
 data class VerseRange(val start: VerseLocation, val end: VerseLocation) {
     init {
-        if(start.book != end.book)
+        if (start.book != end.book)
             throw IllegalArgumentException("Ranges are allowed only on the same book")
     }
 }

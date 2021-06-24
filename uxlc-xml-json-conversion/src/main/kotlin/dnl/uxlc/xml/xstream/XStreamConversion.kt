@@ -12,7 +12,7 @@ import java.lang.StringBuilder
 class XStreamConversion(val wordProcessingStack: WordProcessingStack) : XmlConversion {
     val assertionStack = WordAssertionStack(HasNonHebrewAssertion())
 
-    override fun convert(reader: Reader, bibleBook: BibleBook): dnl.bible.api.v2.Book {
+    override fun convert(reader: Reader, bibleBook: BibleBook): dnl.bible.json.v2.Book {
         val xStream = XStream()
         xStream.ignoreUnknownElements()
         xStream.processAnnotations(Root::class.java)
@@ -20,7 +20,7 @@ class XStreamConversion(val wordProcessingStack: WordProcessingStack) : XmlConve
         return convert(root.tanach.books[0], bibleBook)
     }
 
-    fun convert(book: Book, bibleBook: BibleBook): dnl.bible.api.v2.Book {
+    fun convert(book: Book, bibleBook: BibleBook): dnl.bible.json.v2.Book {
         val chapters = mutableListOf<dnl.bible.json.v2.Chapter>()
 
         var numOfVerses = 0

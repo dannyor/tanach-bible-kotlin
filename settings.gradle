@@ -1,3 +1,3 @@
 
 rootProject.name = 'tanach-bible-kotlin'
-include('tanach-bible-api', 'tanach-bible-json', /*'playground',*/ 'uxlc-xml-json-conversion')
+include('tanach-bible-api', 'tanach-bible-json', 'playground', 'uxlc-xml-json-conversion')
