@@ -1,15 +1,15 @@
 package dnl.bible.json
 
 import dnl.bible.api.BibleBook
-import dnl.bible.api.v2.*
+import dnl.bible.api.*
 
-class BibleImpl(val delegate:dnl.bible.json.v2.Bible) : Bible {
-    override fun getBook(book: BibleBook): Book {
+class BibleImpl(val delegate: Bible) : dnl.bible.api.Bible {
+    override fun getBook(book: BibleBook): dnl.bible.api.Book {
         return BookImpl(delegate.getBook(book))
     }
 }
 
-class BookImpl(val delegate: dnl.bible.json.v2.Book) : Book {
+class BookImpl(val delegate: Book) : dnl.bible.api.Book {
     override fun getName(): String {
         return delegate.name
     }
@@ -26,17 +26,17 @@ class BookImpl(val delegate: dnl.bible.json.v2.Book) : Book {
         return delegate.chapters.size
     }
 
-    override fun getChapter(index: Int): Chapter {
+    override fun getChapter(index: Int): dnl.bible.api.Chapter {
         return ChapterImpl(this, index, delegate.chapters[index-1])
     }
 }
 
 class ChapterImpl(
-    private val parentBook: Book,
+    private val parentBook: dnl.bible.api.Book,
     private val chapterIndex: Int,
-    private val delegate: dnl.bible.json.v2.Chapter
-) : Chapter {
-    override fun getParent(): Book {
+    private val delegate: Chapter
+) : dnl.bible.api.Chapter {
+    override fun getParent(): dnl.bible.api.Book {
         return parentBook
     }
 
@@ -63,10 +63,10 @@ class ChapterImpl(
 
 class VerseImpl(
     private val verseText: String,
-    private val parentChapter: Chapter,
+    private val parentChapter: dnl.bible.api.Chapter,
     private val verseLocation: VerseLocation
 ) : Verse {
-    override fun getParent(): Chapter {
+    override fun getParent(): dnl.bible.api.Chapter {
         return parentChapter
     }
 

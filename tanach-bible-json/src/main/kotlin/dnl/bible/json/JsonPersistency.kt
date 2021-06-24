@@ -1,4 +1,4 @@
-package dnl.bible.json.v2
+package dnl.bible.json
 
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json

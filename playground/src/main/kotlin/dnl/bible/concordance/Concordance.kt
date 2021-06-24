@@ -3,10 +3,9 @@
 package dnl.bible.concordance
 
 import dnl.bible.api.BibleBook
-import dnl.bible.api.v2.Bible
-import dnl.bible.api.v2.Verse
-import dnl.bible.api.v2.VerseLocation
-import dnl.bible.json.v2.BibleLoader
+import dnl.bible.api.Bible
+import dnl.bible.api.Verse
+import dnl.bible.json.BibleLoader
 import org.slf4j.LoggerFactory
 import java.io.File
 

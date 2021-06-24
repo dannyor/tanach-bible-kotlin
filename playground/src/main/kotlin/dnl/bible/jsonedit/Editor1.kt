@@ -1,8 +1,8 @@
 package dnl.bible.jsonedit
 
-import dnl.bible.api.v2.Bible
-import dnl.bible.api.v2.Chapter
-import dnl.bible.json.v2.BibleLoader
+import dnl.bible.api.Bible
+import dnl.bible.api.Chapter
+import dnl.bible.json.BibleLoader
 import java.awt.BorderLayout
 import java.awt.ComponentOrientation
 import java.awt.Dimension

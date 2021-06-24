@@ -1,9 +1,9 @@
 package dnl.uxlc.xml.json.conversion
 
 import dnl.bible.api.BibleBook
-import dnl.bible.json.v2.Bible
-import dnl.bible.json.v2.Book
-import dnl.bible.json.v2.JsonPersistency
+import dnl.bible.json.Bible
+import dnl.bible.json.Book
+import dnl.bible.json.JsonPersistency
 import dnl.uxlc.xml.xstream.OnlyHebrew
 import dnl.uxlc.xml.xstream.OnlyHebrewLetters
 import dnl.uxlc.xml.xstream.WordProcessingStack

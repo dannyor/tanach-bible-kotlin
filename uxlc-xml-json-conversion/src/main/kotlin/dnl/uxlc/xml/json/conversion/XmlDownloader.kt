@@ -19,7 +19,6 @@ class Downloader {
     val downloadDir = File("xml-output")
 
     fun downloadAll() {
-        val result = mutableListOf<String>()
         val lines = FileUtils.readLines(File("src/main/resources/bible-boox.txt"))
         lines.forEach {
             println(it)

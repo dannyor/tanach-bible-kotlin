@@ -1,4 +1,4 @@
-package dnl.bible.api.v2
+package dnl.bible.api
 
 import dnl.bible.api.BibleBook
 import dnl.bible.api.HumashEnum

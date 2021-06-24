@@ -1,9 +1,9 @@
 package dnl.bible.jsonedit
 
 import dnl.bible.api.BibleBook
-import dnl.bible.api.v2.Bible
-import dnl.bible.api.v2.Book
-import dnl.bible.api.v2.Chapter
+import dnl.bible.api.Bible
+import dnl.bible.api.Book
+import dnl.bible.api.Chapter
 import javax.swing.JTree
 import javax.swing.event.TreeModelListener
 import javax.swing.tree.DefaultMutableTreeNode

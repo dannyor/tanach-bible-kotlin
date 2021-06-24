@@ -1,8 +1,5 @@
 package dnl.bible.api
 
-import dnl.bible.api.v2.Book
-import dnl.bible.api.v2.Verse
-import dnl.bible.api.v2.VerseRange
 
 class VerseRangeIterator(private val book: Book, private val range: VerseRange) : Iterator<Verse> {
     private lateinit var current: Verse

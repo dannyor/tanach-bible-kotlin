@@ -1,8 +1,5 @@
 package dnl.bible.api
 
-import dnl.bible.api.v2.Book
-import dnl.bible.api.v2.VerseLocation
-import dnl.bible.api.v2.VerseRange
 import java.util.regex.Pattern
 
 object VerseRangeFactory {

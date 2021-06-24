@@ -12,7 +12,7 @@ import java.lang.StringBuilder
 class XStreamConversion(val wordProcessingStack: WordProcessingStack) : XmlConversion {
     val assertionStack = WordAssertionStack(HasNonHebrewAssertion())
 
-    override fun convert(reader: Reader, bibleBook: BibleBook): dnl.bible.json.v2.Book {
+    override fun convert(reader: Reader, bibleBook: BibleBook): dnl.bible.json.Book {
         val xStream = XStream()
         xStream.ignoreUnknownElements()
         xStream.processAnnotations(Root::class.java)
@@ -20,8 +20,8 @@ class XStreamConversion(val wordProcessingStack: WordProcessingStack) : XmlConve
         return convert(root.tanach.books[0], bibleBook)
     }
 
-    fun convert(book: Book, bibleBook: BibleBook): dnl.bible.json.v2.Book {
-        val chapters = mutableListOf<dnl.bible.json.v2.Chapter>()
+    fun convert(book: Book, bibleBook: BibleBook): dnl.bible.json.Book {
+        val chapters = mutableListOf<dnl.bible.json.Chapter>()
 
         var numOfVerses = 0
 
@@ -30,7 +30,7 @@ class XStreamConversion(val wordProcessingStack: WordProcessingStack) : XmlConve
             chapters.add(convertedChapter)
             numOfVerses += chapter.numOfVerses
         }
-        val result = dnl.bible.json.v2.Book(
+        val result = dnl.bible.json.Book(
             book.names.name,
             book.names.hebrewname,
             numOfVerses,
@@ -41,7 +41,7 @@ class XStreamConversion(val wordProcessingStack: WordProcessingStack) : XmlConve
         return result
     }
 
-    fun convert(chapter: Chapter, chapterIndex:Int): dnl.bible.json.v2.Chapter {
+    fun convert(chapter: Chapter, chapterIndex:Int): dnl.bible.json.Chapter {
         val verses = mutableListOf<String>()
         chapter.verses.forEachIndexed { verseIndex, verse ->
             val sb = StringBuilder()
@@ -54,7 +54,7 @@ class XStreamConversion(val wordProcessingStack: WordProcessingStack) : XmlConve
             }
             verses.add(sb.toString())
         }
-        return dnl.bible.json.v2.Chapter(verses)
+        return dnl.bible.json.Chapter(verses)
     }
 }
 

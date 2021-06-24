@@ -1,4 +1,4 @@
-package dnl.bible.json.v2
+package dnl.bible.json
 
 import dnl.bible.api.BibleBook
 import kotlinx.serialization.Serializable

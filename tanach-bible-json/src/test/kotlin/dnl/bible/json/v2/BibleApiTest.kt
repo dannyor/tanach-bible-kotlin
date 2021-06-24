@@ -2,8 +2,8 @@ package dnl.bible.json.v2
 
 import dnl.bible.api.BibleBook
 import dnl.bible.api.VerseRangeFactory
-import dnl.bible.api.v2.Bible
-import dnl.bible.json.VerseIterationTest
+import dnl.bible.api.Bible
+import dnl.bible.json.BibleLoader
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
