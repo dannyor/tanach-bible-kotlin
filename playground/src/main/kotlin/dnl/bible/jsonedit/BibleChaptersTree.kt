@@ -4,6 +4,7 @@ import dnl.bible.api.BibleBook
 import dnl.bible.api.Bible
 import dnl.bible.api.Book
 import dnl.bible.api.Chapter
+import dnl.bible.api.HebrewNumberingSystem.Companion.toHebrewString
 import javax.swing.JTree
 import javax.swing.event.TreeModelListener
 import javax.swing.tree.DefaultMutableTreeNode
@@ -69,11 +70,11 @@ class BibleTreeModel(val bible:Bible, val rootNode: TreeNode) : TreeModel {
 
 data class BookNode(val book: Book) : DefaultMutableTreeNode(book.getName()) {
     override fun toString(): String {
-        return book.getName()
+        return book.getHebrewName()
     }
 }
 data class ChapterNode(val chapter: Chapter) : DefaultMutableTreeNode(chapter.getIndex()) {
     override fun toString(): String {
-        return chapter.getIndex().toString()
+        return chapter.getIndex().toHebrewString()
     }
 }

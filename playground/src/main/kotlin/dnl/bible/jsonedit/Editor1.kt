@@ -51,8 +51,9 @@ class Editor1 : JFrame("") {
         fileMenu.add(exitMenuItem)
 
         this.jMenuBar = menuBar
-        splitPane.rightComponent = editorPanel
-        splitPane.leftComponent = JScrollPane(bibleChaptersTree)
+        bibleChaptersTree.componentOrientation = ComponentOrientation.RIGHT_TO_LEFT
+        splitPane.rightComponent = JScrollPane(bibleChaptersTree)
+        splitPane.leftComponent = editorPanel
         add(splitPane, BorderLayout.CENTER)
         pack()
         splitPane.dividerLocation = 350
@@ -64,9 +65,7 @@ class Editor1 : JFrame("") {
         val node = bibleChaptersTree.lastSelectedPathComponent
         if(node is ChapterNode) {
             val chapterAsText = getChapterAsText((node as ChapterNode).chapter)
-            editorPanel.editorPane.componentOrientation = ComponentOrientation.RIGHT_TO_LEFT
             editorPanel.editorPane.text = chapterAsText
-            editorPanel.editorPane.componentOrientation = ComponentOrientation.RIGHT_TO_LEFT
         }
     }
 
