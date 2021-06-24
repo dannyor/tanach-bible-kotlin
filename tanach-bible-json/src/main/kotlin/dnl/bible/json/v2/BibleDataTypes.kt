@@ -2,7 +2,6 @@ package dnl.bible.json.v2
 
 import dnl.bible.api.BibleBook
 import kotlinx.serialization.Serializable
-import org.apache.commons.lang3.StringUtils
 
 @Serializable
 data class Bible(val books: List<Book>) : dnl.bible.api.v2.Bible {
@@ -21,8 +20,9 @@ data class Book(
     val chapters: List<Chapter>
 ) : dnl.bible.api.v2.Book {
 
-    override val numOfChapters: Int
-        get() = chapters.size
+//    override fun getNumOfChapters(): Int {
+//        return chapters.size
+//    }
 
     override fun getChapter(index: Int): dnl.bible.api.v2.Chapter {
         val chapter = chapters[index - 1]

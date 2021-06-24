@@ -2,6 +2,7 @@ package dnl.bible.api
 
 import dnl.bible.api.BibleBook.*
 import dnl.bible.api.VerseRangeFactory.newVerseRange
+import dnl.bible.api.v2.VerseRange
 import java.lang.IllegalArgumentException
 
 

@@ -6,25 +6,27 @@ import dnl.bible.api.Bible
 import dnl.bible.api.BibleBook
 import dnl.bible.api.Verse
 import dnl.bible.api.VerseLocation
+import dnl.bible.api.v2.Bible
+import dnl.bible.api.v2.VerseLocation
 import dnl.bible.json.BibleLoader
 import org.slf4j.LoggerFactory
 import java.io.File
 
 interface Concordance {
-    fun find(word:String) : List<Verse>
+    fun find(word:String) : List<VerseLocation>
 }
 
 class ConcordanceFromBible(val bible: Bible): Concordance {
     val logger = LoggerFactory.getLogger(javaClass)
 
-    override fun find(word: String): List<Verse> {
+    override fun find(word: String): List<VerseLocation> {
         logger.info("Find '$word'")
 
-        val result = mutableListOf<Verse>()
+        val result = mutableListOf<VerseLocation>()
 
         BibleBook.values().forEach {
             logger.info("start processing $it")
-            val bookResult = mutableListOf<Verse>()
+            val bookResult = mutableListOf<VerseLocation>()
             var verse = bible.getBook(it).getVerse(VerseLocation(it, 1, 1))
             while (verse.hasNext()) {
                 if(verse.getText().contains(word))

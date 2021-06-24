@@ -17,4 +17,5 @@ class VerseRangeTest {
         Assertions.assertEquals(1, range.end.chapterIndex)
         Assertions.assertEquals(5, range.end.verseIndex)
     }
+
 }

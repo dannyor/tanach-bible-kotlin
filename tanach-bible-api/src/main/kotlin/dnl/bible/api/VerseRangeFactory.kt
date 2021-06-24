@@ -1,5 +1,8 @@
 package dnl.bible.api
 
+import dnl.bible.api.v2.Book
+import dnl.bible.api.v2.VerseLocation
+import dnl.bible.api.v2.VerseRange
 import java.util.regex.Pattern
 
 object VerseRangeFactory {
@@ -11,6 +14,13 @@ object VerseRangeFactory {
         return VerseRange(
             VerseLocation(book, matcher.group(2).toInt(), matcher.group(3).toInt()),
             VerseLocation(book, matcher.group(4).toInt(), matcher.group(5).toInt())
+        )
+    }
+
+    fun newSingleChapterRange(book: Book, chapterIndex: Int): VerseRange {
+        return VerseRange(
+            VerseLocation(book.bookEnumVal, chapterIndex, 1),
+            VerseLocation(book.bookEnumVal, chapterIndex, book.getChapter(chapterIndex).verses.size),
         )
     }
 }

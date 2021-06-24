@@ -28,17 +28,18 @@ interface Bible {
 interface Book {
     val name: String
     val hebrewName: String
-    val numOfChapters: Int
     val bookEnumVal : BibleBook
+
+//    fun getNumOfChapters():Int
 
     /**
      * Gets a chapter by a (1 based) index. That is, first chapter index is 1.
      */
     fun getChapter(index: Int): Chapter
 
-//    fun getVerse(location: VerseLocation): Verse {
-//        return getChapter(location.chapterIndex).verses[location.verseIndex-1]
-//    }
+    fun getVerse(location: VerseLocation): String {
+        return getChapter(location.chapterIndex).verses[location.verseIndex-1]
+    }
 
 //    fun getVerseRange(verseRange: VerseRange): Iterator<Verse> {
 //        return VerseRangeIterator(this, verseRange)
@@ -52,13 +53,6 @@ interface Humash : Book {
 interface Chapter {
     val verses: List<String>
     fun getParent(): Book
-
-    /**
-     * Gets a verse by a (1 based) index. That is, first verse index is 1.
-     */
-//    fun getVerse(index: Int): Verse
-//    fun getVerseAsString(index: Int): String
-
 }
 
 interface Verse {
