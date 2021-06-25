@@ -82,4 +82,8 @@ class VerseImpl(
         return verseText
     }
 
+    override fun toString(): String {
+        return "VerseImpl(verseText='$verseText', verseLocation=$verseLocation)"
+    }
+
 }

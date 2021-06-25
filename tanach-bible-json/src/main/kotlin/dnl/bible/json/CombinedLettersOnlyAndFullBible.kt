@@ -55,7 +55,7 @@ class CombinedChapter(
 
     override fun getAllVerses(): List<Verse> = throw UnsupportedOperationException()
     override fun getAllVersesStrings(): List<String> = throw UnsupportedOperationException()
-    override fun getVerse(index: Int): Verse = throw UnsupportedOperationException()
+    override fun getVerse(index: Int): Verse = getCombinedVerse(index)
 }
 
 class CombinedVerse(

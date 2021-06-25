@@ -1,6 +1,7 @@
 package dnl.bible.api
 
 import dnl.bible.api.BibleBook
+import dnl.bible.api.HebrewNumberingSystem.Companion.toHebrewString
 import dnl.bible.api.HumashEnum
 import dnl.bible.api.ParashaEnum
 import dnl.bible.api.VerseRangeIterator
@@ -100,7 +101,7 @@ interface Verse {
 
 data class VerseLocation(val book: BibleBook, val chapterIndex: Int, val verseIndex: Int) {
     fun toStringHeb(): String {
-        return "[${book.hebrewName}, $chapterIndex, $verseIndex]"
+        return "[${book.hebrewName}, ${chapterIndex.toHebrewString()}, ${verseIndex.toHebrewString()}]"
     }
 }
 

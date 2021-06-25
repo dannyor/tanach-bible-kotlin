@@ -1,7 +1,11 @@
 plugins {
     id 'proj.kotlin-library-conventions'
+    id 'org.jetbrains.kotlin.plugin.serialization' version '1.5.20-RC'
 }
 
 dependencies {
     implementation project(':tanach-bible-json')
+    implementation 'commons-io:commons-io:2.8.0'
+    implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.1'
+    implementation "ch.qos.logback:logback-classic:1.2.3"
 }
