@@ -17,6 +17,8 @@ object BibleLoader {
         return loadBible(bibleZipFile, false)
     }
 
+    fun loadCombined(loBible:File, full:File) : CombinedBible = CombinedBible(loadJustLettersBible(loBible), loadBibleWithNikudAndTeamim(full))
+
     private fun loadBible(bibleZipFile: File, justLetters: Boolean): dnl.bible.api.Bible {
         fun resolveBibleFile(justLetters: Boolean): TFile {
             TFile(bibleZipFile).listFiles()!!.forEach {

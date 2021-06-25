@@ -1,15 +1,16 @@
 package dnl.bible.jsonedit
 
-import dnl.bible.api.Bible
 import dnl.bible.api.Chapter
 import dnl.bible.json.BibleLoader
+import dnl.bible.json.CombinedBible
+import dnl.bible.json.CombinedChapter
 import java.awt.BorderLayout
 import java.awt.ComponentOrientation
 import java.awt.Dimension
 import java.awt.EventQueue
 import java.awt.event.ActionEvent
 import java.io.File
-import java.lang.StringBuilder
+import java.lang.IllegalArgumentException
 import java.util.logging.Level
 import java.util.logging.Logger
 import javax.swing.*
@@ -28,11 +29,13 @@ class Editor1 : JFrame("") {
 
     private val splitPane = JSplitPane()
     private val bibleChaptersTree = JTree()
-    lateinit var bible: Bible
+    lateinit var bible: CombinedBible
+
+    private lateinit var seletedChapter: CombinedChapter
 
     init {
         menuBar.add(fileMenu)
-        defaultCloseOperation = javax.swing.WindowConstants.EXIT_ON_CLOSE
+        defaultCloseOperation = EXIT_ON_CLOSE
 
         fileMenu.setMnemonic('f')
         fileMenu.text = "File"
@@ -56,17 +59,25 @@ class Editor1 : JFrame("") {
         splitPane.leftComponent = editorPanel
         add(splitPane, BorderLayout.CENTER)
         pack()
-        splitPane.dividerLocation = 350
+        splitPane.dividerLocation = 600
 
         bibleChaptersTree.addTreeSelectionListener { t -> handleTreeSelection(t) }
+        editorPanel.checkBox.addItemListener {
+            displaySelectedChapter()
+        }
     }
 
     private fun handleTreeSelection(t: TreeSelectionEvent?) {
         val node = bibleChaptersTree.lastSelectedPathComponent
-        if(node is ChapterNode) {
-            val chapterAsText = getChapterAsText((node as ChapterNode).chapter)
-            editorPanel.editorPane.text = chapterAsText
+        if (node is ChapterNode) {
+            seletedChapter = node.chapter
+            displaySelectedChapter()
         }
+    }
+
+    private fun displaySelectedChapter() {
+        val chapterAsText = getChapterAsText(seletedChapter)
+        editorPanel.editorPane.text = chapterAsText
     }
 
     private fun openMenuItemActionPerformed(evt: ActionEvent?) {
@@ -84,13 +95,21 @@ class Editor1 : JFrame("") {
     }
 
     fun openFile(file: File) {
-        bible = BibleLoader.loadJustLettersBible(file)
+        val full = File(file.parentFile, "bible-nikud_and_teamim-1.1.zip")
+        if (!full.exists()) {
+            throw IllegalArgumentException()
+        }
+        bible = BibleLoader.loadCombined(file, full)
         bibleChaptersTree.model = BibleTreeModel(bible, DefaultMutableTreeNode(bible))
     }
 
-    private fun getChapterAsText(chap:Chapter) : String {
+    private fun getChapterAsText(chap: CombinedChapter): String {
         val sb = StringBuilder()
-        chap.getAllVerses().forEach { sb.append(it.getText()); sb.append('\n') }
+
+        chap.getAllCombinedVerses().forEach {
+            sb.append(if (editorPanel.isFullSymbols()) it.getFullSymbolsText() else it.getLettersOnlyText())
+            sb.append('\n')
+        }
         return sb.toString()
     }
 }
@@ -115,7 +134,7 @@ fun main() {
 
     EventQueue.invokeLater {
         val editor1 = Editor1()
-        editor1.size = Dimension(1000,1000)
+        editor1.size = Dimension(1000, 1000)
         editor1.openFile(File("./uxlc-xml-json-conversion/json-output/uxlc-1.2/bible-just_letters-1.1.zip"))
         editor1.isVisible = true
     }
