@@ -5,7 +5,7 @@ import dnl.bible.api.VerseRangeFactory.newVerseRange
 import java.lang.IllegalArgumentException
 
 
-enum class BibleGroups(val groupName: String, vararg book: BibleBook) {
+enum class BibleGroups(val groupName: String, vararg val books: BibleBook) {
     TORA("תורה", GENESIS, EXODUS, LEVITICUS, NUMBERS, DEUTERONOMY),
     NEVIIM(
         "נביאים",
