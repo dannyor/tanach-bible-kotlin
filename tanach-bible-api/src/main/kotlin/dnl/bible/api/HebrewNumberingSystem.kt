@@ -5,7 +5,7 @@ import java.lang.IllegalArgumentException
 class HebrewNumberingSystem {
     companion object {
 
-        val m1to19 = mapOf(
+        private val m1to19 = mapOf(
             0 to "",
             1 to "א",
             2 to "ב",
@@ -28,7 +28,7 @@ class HebrewNumberingSystem {
             19 to "יט"
         )
 
-        val m10s = mapOf(
+        private val m10s = mapOf(
             0 to "",
             1 to "י",
             2 to "כ",
@@ -41,7 +41,7 @@ class HebrewNumberingSystem {
             9 to "צ"
         )
 
-        val m100s = mapOf(
+        private val m100s = mapOf(
             1 to "ק",
             2 to "ר",
             3 to "ש",
@@ -52,6 +52,10 @@ class HebrewNumberingSystem {
             8 to "תת",
             9 to "תתק",
         )
+
+        private val m10Factored = m10s.map { it.key*10 to it.value }.toMap()
+        private val m100Factored = m100s.map { it.key*100 to it.value }.toMap()
+        private val invMap = m100Factored.inverseMap().plus(m10Factored.inverseMap()).plus(m1to19.inverseMap())
 
         fun Int.toHebrewString(): String {
             if (this >= 10000) throw IllegalArgumentException("")
@@ -69,5 +73,15 @@ class HebrewNumberingSystem {
             return m1to19[thousandsDigit]!! +"׳"+ hundredsTensAndUnits
         }
 
+        fun Int.Companion.parseHebrewString(s:String) : Int {
+            var sum = 0
+            s.forEach {
+                sum += invMap[it.toString()]!!
+            }
+            return sum
+        }
     }
 }
+
+fun <K, V> Map<K, V>.inverseMap() = map { Pair(it.value, it.key) }.toMap()
+

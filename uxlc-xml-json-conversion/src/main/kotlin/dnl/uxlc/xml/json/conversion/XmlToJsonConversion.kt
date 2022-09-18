@@ -1,8 +1,8 @@
 package dnl.uxlc.xml.json.conversion
 
 import dnl.bible.api.BibleBook
-import dnl.bible.json.Bible
-import dnl.bible.json.Book
+import dnl.bible.json.SerializableBible
+import dnl.bible.json.SerializableBook
 import dnl.bible.json.JsonPersistency
 import dnl.uxlc.xml.xstream.OnlyHebrew
 import dnl.uxlc.xml.xstream.OnlyHebrewLetters
@@ -32,7 +32,7 @@ class XmlToJsonConversion(
 
     fun processFullBible() {
         logger.info("processFullBible(): target is $fullBibleTargetBaseName. wordProcessingStack=$wordProcessingStack")
-        val boox = mutableListOf<Book>()
+        val boox = mutableListOf<SerializableBook>()
         BibleBook.values().forEach {
             val xmlFile = getXmlFileForBook(it)
             if (!xmlFile.exists()) {
@@ -41,11 +41,11 @@ class XmlToJsonConversion(
             }
             println("processing file: ${xmlFile.name}")
             val xmlParser = XStreamConversion(wordProcessingStack)
-            val book = xmlParser.convert(FileReader(xmlFile), it) as Book
+            val book = xmlParser.convert(FileReader(xmlFile), it) as SerializableBook
             boox.add(book)
         }
 
-        val bible = Bible(boox)
+        val bible = SerializableBible(boox)
         val jsonPersistency = JsonPersistency()
         val jsonFile = File(targetDir, "$fullBibleTargetBaseName.json")
         jsonPersistency.write(jsonFile, bible)

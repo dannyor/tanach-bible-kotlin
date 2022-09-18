@@ -6,6 +6,7 @@ import dnl.bible.api.HebrewNumberingSystem.Companion.toHebrewString
 import dnl.bible.api.VerseLocation
 import dnl.bible.json.BibleLoader
 import dnl.bible.json.CombinedBible
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -23,6 +24,7 @@ class DictionaryCreator(bible: CombinedBible) : CombinedBibleWordTraversal(bible
     }
 }
 
+@OptIn(ExperimentalSerializationApi::class)
 fun main() {
     val bible = BibleLoader.loadCombined(
         File("./uxlc-xml-json-conversion/json-output/uxlc-1.2/bible-just_letters-1.1.zip"),
@@ -31,7 +33,8 @@ fun main() {
     val dictionaryCreator = DictionaryCreator(bible)
     dictionaryCreator.process()
     println(dictionaryCreator.map.size)
-    val encodedString = Json { prettyPrint = true }.encodeToString(dictionaryCreator.map)
+    val json = Json { prettyPrint = true }
+    val encodedString = json.encodeToString(dictionaryCreator.map)
     FileUtils.write(File("products/dictionary.json"), encodedString, "UTF-16")
 }
 

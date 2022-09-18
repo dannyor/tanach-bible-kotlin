@@ -3,13 +3,13 @@ package dnl.bible.json
 import dnl.bible.api.BibleBook
 import dnl.bible.api.*
 
-class BibleImpl(val delegate: Bible) : dnl.bible.api.Bible {
+class BibleImpl(val delegate: SerializableBible) : dnl.bible.api.Bible {
     override fun getBook(book: BibleBook): dnl.bible.api.Book {
         return BookImpl(delegate.getBook(book))
     }
 }
 
-class BookImpl(val delegate: Book) : dnl.bible.api.Book {
+class BookImpl(val delegate: SerializableBook) : dnl.bible.api.Book {
     override fun getName(): String {
         return delegate.name
     }
@@ -34,7 +34,7 @@ class BookImpl(val delegate: Book) : dnl.bible.api.Book {
 class ChapterImpl(
     private val parentBook: dnl.bible.api.Book,
     private val chapterIndex: Int,
-    private val delegate: Chapter
+    private val delegate: SerializableChapter
 ) : dnl.bible.api.Chapter {
     override fun getParent(): dnl.bible.api.Book {
         return parentBook

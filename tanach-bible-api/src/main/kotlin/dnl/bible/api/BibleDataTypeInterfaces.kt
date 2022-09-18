@@ -101,7 +101,7 @@ interface Verse {
 
 data class VerseLocation(val book: BibleBook, val chapterIndex: Int, val verseIndex: Int) {
     fun toStringHeb(): String {
-        return "[${book.hebrewName}, ${chapterIndex.toHebrewString()}, ${verseIndex.toHebrewString()}]"
+        return "[${book.hebrewName}:${chapterIndex.toHebrewString()}:${verseIndex.toHebrewString()}]"
     }
 }
 

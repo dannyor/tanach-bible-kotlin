@@ -9,6 +9,10 @@ class HebrewCharacterUtils {
         fun isHebrewLetter(char:Char) : Boolean {
             return char.toInt() in 0x5D0..0x5EA
         }
+
+        fun isHebrewPunctuation(char:Char) : Boolean {
+            return char.toInt() in 0x5B0..0x5BC || char.toInt() in arrayOf(0x5C1, 0x5C2, 0x5C7, 0x5F3, 0x5F4)
+        }
     }
 }
 

@@ -5,6 +5,7 @@ import dnl.bible.api.BibleBook
 import dnl.bible.api.VerseLocation
 import dnl.bible.json.CombinedBible
 import dnl.bible.json.CombinedVerse
+import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 abstract class BibleWordTraversal(val bible: Bible) {
@@ -24,7 +25,7 @@ abstract class BibleWordTraversal(val bible: Bible) {
 }
 
 abstract class CombinedBibleWordTraversal(val bible: CombinedBible) {
-    val logger = LoggerFactory.getLogger(javaClass)
+    private val logger: Logger = LoggerFactory.getLogger(javaClass)
 
     fun process() {
         logger.info("process() started")

@@ -38,7 +38,7 @@ object BibleLoader {
             val istream = TFileInputStream(tFile)
             istream.use {
                 val fileContents = IOUtils.toString(istream, "UTF-16")
-                val bible: Bible = Json { prettyPrint = true }.decodeFromString(fileContents)
+                val bible: SerializableBible = Json { prettyPrint = true }.decodeFromString(fileContents)
                 return BibleImpl(bible)
             }
         }
