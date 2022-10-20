@@ -1,12 +1,16 @@
 plugins {
     id 'proj.kotlin-library-conventions'
-    id 'org.jetbrains.kotlin.plugin.serialization' version '1.5.20-RC'
+    id 'org.jetbrains.kotlin.plugin.serialization' version '1.7.20'
 }
 
 dependencies {
     implementation project(':tanach-bible-json')
-    implementation 'commons-io:commons-io:2.8.0'
-    implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.1'
-    implementation "ch.qos.logback:logback-classic:1.2.3"
+    implementation 'commons-io:commons-io:2.11.0'
+    implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1'
+    implementation 'ch.qos.logback:logback-classic:1.4.4'
     implementation group: 'com.google.guava', name: 'guava', version: '30.1.1-jre'
+}
+
+repositories {
+    mavenCentral()
 }
