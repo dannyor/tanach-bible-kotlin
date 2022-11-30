@@ -18,9 +18,9 @@ class WordCollector(bible: CombinedBible) : CombinedBibleWordTraversal(bible) {
     val map = mutableSetOf<SerializableWord>()
 
     override fun traverseWord(word: String, full: String, verseLocation: VerseLocation) {
-        val text = full.filter { isHebrewLetter(it) }
+//        val text = full.filter { isHebrewLetter(it) }
         val withPunctuation: String = full.filter { isHebrewLetter(it) || isHebrewPunctuation(it) }
-        map.add(SerializableWord(text, withPunctuation))
+         map.add(SerializableWord(word, withPunctuation))
     }
 }
 

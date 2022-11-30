@@ -6,17 +6,19 @@ import dnl.bible.api.BibleBook.PSALMS
 import dnl.bible.json.BibleLoader
 import java.io.File
 
-class PsalmsVerseForName1(val bible: Bible, val personsName: String) {
+class PsalmsVerseForName1(
+    val bible: Bible, private val personName: String
+) {
 
-    val books: List<BibleBook> = BibleGroups.TORA.books.asList() + PSALMS
+    private val books: List<BibleBook> = BibleGroups.TORA.books.asList() + PSALMS
 
     fun getMatchingVerses(): List<Verse> {
         val result = mutableListOf<Verse>()
         books.forEach {
             bible.getBook(it).getIterator().forEach { verse ->
                 if (
-                    (verse.getText().startsWith(personsName.first()) && verse.getText().endsWith(personsName.last())) ||
-                    verse.getText().contains(personsName)
+                    (verse.getText().startsWith(personName.first()) && verse.getText().endsWith(personName.last())) ||
+                    verse.getText().contains(personName)
                 ) {
                     result.add(verse)
                 }

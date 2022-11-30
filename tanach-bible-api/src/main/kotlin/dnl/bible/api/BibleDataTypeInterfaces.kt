@@ -1,10 +1,6 @@
 package dnl.bible.api
 
-import dnl.bible.api.BibleBook
 import dnl.bible.api.HebrewNumberingSystem.Companion.toHebrewString
-import dnl.bible.api.HumashEnum
-import dnl.bible.api.ParashaEnum
-import dnl.bible.api.VerseRangeIterator
 
 interface Tora {
     fun getHumash(humash: HumashEnum): Book
@@ -83,8 +79,6 @@ interface Chapter {
         val lastVerse = VerseLocation(getParent().getBookEnum(), getIndex(), getNumOfVerses())
         return VerseRange(firstVerse, lastVerse)
     }
-
-    fun getIterator(): Iterator<Verse> = VerseRangeIterator(getParent(), asVerseRange())
 }
 
 interface Verse {
@@ -102,6 +96,13 @@ interface Verse {
 data class VerseLocation(val book: BibleBook, val chapterIndex: Int, val verseIndex: Int) {
     fun toStringHeb(): String {
         return "[${book.hebrewName}:${chapterIndex.toHebrewString()}:${verseIndex.toHebrewString()}]"
+    }
+}
+
+data class WordLocation(val verseLocation: VerseLocation, val wordIndex: Int) {
+    override fun toString(): String {
+        val vl = verseLocation
+        return "[${vl.book.englishName}:${vl.chapterIndex}:${vl.verseIndex}:${wordIndex}]"
     }
 }
 

@@ -45,7 +45,7 @@ class ChapterImpl(
     }
 
     override fun getAllVerses(): List<Verse> {
-        return getIterator().asSequence().toList()
+        return verseIterator().asSequence().toList()
     }
 
     override fun getAllVersesStrings(): List<String> {
