@@ -2,14 +2,25 @@ package dnl.bible.api
 
 import java.lang.IllegalStateException
 
+
+interface LocationListener {
+    fun onVerse(verse: Verse) {}
+    fun onChapter(chapter: Chapter) {}
+    fun onBook(book: Book) {}
+}
+
 fun Bible.bookIterator(): Iterator<Book> = BookIterator(this)
-fun Bible.verseIterator(): Iterator<Verse> = FullBibleVerseIterator(this)
+fun Bible.verseIterator(
+    locationListener: LocationListener = object : LocationListener {}
+): Iterator<Verse> =
+    FullBibleVerseIterator(this, locationListener::onBook, locationListener::onChapter)
+
 fun Book.chapterIterator(): Iterator<Chapter> = BookChapterIterator(this)
 fun Chapter.verseIterator(): Iterator<Verse> = ChapterVerseIterator(this)
-fun Book.verseIterator(): Iterator<Verse> = BookVerseIterator(this)
+fun Book.verseIterator(onChapter: (chapter: Chapter) -> Unit = {}): Iterator<Verse> = BookVerseIterator(this, onChapter)
 
 fun Iterator<Verse>.asList() = this.asSequence().toList()
-fun Iterator<Verse>.toWordIterator(): Iterator<String> = WordIterator(this)
+fun Iterator<Verse>.toWordIterator(onVerse: (verse: Verse) -> Unit = {}): Iterator<String> = WordIterator(this, onVerse)
 
 private class BookIterator(private val bible: Bible) : Iterator<Book> {
     private var bookIndex = 0
@@ -31,7 +42,7 @@ private class BookChapterIterator(val book: Book) : Iterator<Chapter> {
     override fun next() = book.getChapter(chapterIndex++)
 }
 
-class BookVerseIterator(book: Book) : Iterator<Verse> {
+class BookVerseIterator(book: Book, val onChapter: (chapter: Chapter) -> Unit = {}) : Iterator<Verse> {
     private val chapterIterator = book.chapterIterator()
     private var chapterVerseIterator = chapterIterator.next().verseIterator()
     override fun hasNext(): Boolean {
@@ -47,9 +58,13 @@ class BookVerseIterator(book: Book) : Iterator<Verse> {
     }
 }
 
-class FullBibleVerseIterator(val bible: Bible) : Iterator<Verse> {
+class FullBibleVerseIterator(
+    val bible: Bible,
+    private val onBook: (book: Book) -> Unit = {},
+    onChapter: (chapter: Chapter) -> Unit = {}
+) : Iterator<Verse> {
     private val bookIterator = BookIterator(bible)
-    private var bookVerseIterator = bookIterator.next().verseIterator()
+    private var bookVerseIterator = bookIterator.next().verseIterator(onChapter)
 
     override fun hasNext(): Boolean {
         if (bookVerseIterator.hasNext()) return true
@@ -57,10 +72,12 @@ class FullBibleVerseIterator(val bible: Bible) : Iterator<Verse> {
         return true
     }
 
-    override fun next() : Verse {
+    override fun next(): Verse {
         if (!bookVerseIterator.hasNext()) {
-            if(!bookIterator.hasNext()) throw IllegalStateException("THE END. Did you call hasNext()?")
-            bookVerseIterator = bookIterator.next().verseIterator()
+            if (!bookIterator.hasNext()) throw IllegalStateException("THE END. Did you call hasNext()?")
+            val nextBook = bookIterator.next()
+            onBook(nextBook)
+            bookVerseIterator = nextBook.verseIterator()
         }
         return bookVerseIterator.next()
     }
@@ -95,7 +112,10 @@ class VerseRangeIterator(private val book: Book, private val range: VerseRange) 
     }
 }
 
-private class WordIterator(val verseIterator: Iterator<Verse>) : Iterator<String> {
+private class WordIterator(
+    val verseIterator: Iterator<Verse>,
+    val onVerse: (verse: Verse) -> Unit = {}
+) : Iterator<String> {
     private var currentVerse = verseIterator.next().getWords()
     private var indexInWord = 0
 
@@ -107,7 +127,9 @@ private class WordIterator(val verseIterator: Iterator<Verse>) : Iterator<String
 
     override fun next(): String {
         if (indexInWord == currentVerse.size) {
-            currentVerse = verseIterator.next().getWords()
+            val nextVerse = verseIterator.next()
+            onVerse(nextVerse)
+            currentVerse = nextVerse.getWords()
             indexInWord = 0
         }
         return currentVerse[indexInWord++]
