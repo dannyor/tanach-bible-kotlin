@@ -7,3 +7,6 @@ version = "1.0"
 dependencies {
     implementation 'io.michaelrocks.bimap:bimap:1.1.0'
 }
+repositories {
+    mavenCentral()
+}
