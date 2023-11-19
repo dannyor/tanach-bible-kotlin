@@ -93,26 +93,4 @@ interface Verse {
     }
 }
 
-data class VerseLocation(val book: BibleBook, val chapterIndex: Int, val verseIndex: Int) {
-    fun toStringHeb(): String {
-        return "[${book.hebrewName}:${chapterIndex.toHebrewString()}:${verseIndex.toHebrewString()}]"
-    }
-}
-
-data class WordLocation(val verseLocation: VerseLocation, val wordIndex: Int) {
-    override fun toString(): String {
-        val vl = verseLocation
-        return "[${vl.book.englishName}:${vl.chapterIndex}:${vl.verseIndex}:${wordIndex}]"
-    }
-}
-
-/**
- * Describes an inclusive range of verses.
- */
-data class VerseRange(val start: VerseLocation, val end: VerseLocation) {
-    init {
-        if (start.book != end.book)
-            throw IllegalArgumentException("Ranges are allowed only on the same book")
-    }
-}
 

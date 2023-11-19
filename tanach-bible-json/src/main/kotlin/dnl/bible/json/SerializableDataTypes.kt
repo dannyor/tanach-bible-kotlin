@@ -31,7 +31,6 @@ data class SerializableChapter(
         return parentBook
     }
 }
-
 @Serializable
 data class SerializableWord(
 //    val fullText: String,

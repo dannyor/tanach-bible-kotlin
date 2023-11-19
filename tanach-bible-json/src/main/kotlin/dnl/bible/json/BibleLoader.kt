@@ -1,6 +1,5 @@
 package dnl.bible.json
 
-import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import net.java.truevfs.access.TFile
 import net.java.truevfs.access.TFileInputStream
@@ -18,6 +17,8 @@ object BibleLoader {
     }
 
     fun loadCombined(loBible:File, full:File) : CombinedBible = CombinedBible(loadJustLettersBible(loBible), loadBibleWithNikudAndTeamim(full))
+
+    private val json = Json { prettyPrint = true }
 
     private fun loadBible(bibleZipFile: File, justLetters: Boolean): dnl.bible.api.Bible {
         fun resolveBibleFile(justLetters: Boolean): TFile {
@@ -38,7 +39,7 @@ object BibleLoader {
             val istream = TFileInputStream(tFile)
             istream.use {
                 val fileContents = IOUtils.toString(istream, "UTF-16")
-                val bible: SerializableBible = Json { prettyPrint = true }.decodeFromString(fileContents)
+                val bible: SerializableBible = json.decodeFromString(fileContents)
                 return BibleImpl(bible)
             }
         }

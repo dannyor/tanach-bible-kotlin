@@ -1,7 +1,5 @@
 package dnl.bible.api
 
-import java.lang.IllegalStateException
-
 
 interface LocationListener {
     fun onVerse(verse: Verse) {}
@@ -112,7 +110,7 @@ class VerseRangeIterator(private val book: Book, private val range: VerseRange) 
     }
 }
 
-private class WordIterator(
+class WordIterator(
     val verseIterator: Iterator<Verse>,
     val onVerse: (verse: Verse) -> Unit = {}
 ) : Iterator<String> {
@@ -133,5 +131,66 @@ private class WordIterator(
             indexInWord = 0
         }
         return currentVerse[indexInWord++]
+    }
+}
+
+class CharacterIterator(
+    private val verseIterator: Iterator<Verse>,
+    val onVerse: (verse: Verse) -> Unit = {},
+    val onWord: (word: String) -> Unit = {}
+) : Iterator<Char> {
+    private lateinit var currentVerse: Verse
+    private lateinit var currentVerseWords: List<String>
+    private var wordIndex = 0
+    private var charIndex = 0
+    private var theEnd = false
+
+    init {
+        nextVerse()
+    }
+
+    override fun hasNext(): Boolean {
+//        if (wordIndex < currentVerseWords.size) return true
+//        if (charIndex < currentVerseWords.last().length) return true
+//        if (!verseIterator.hasNext()) return false
+        return !theEnd
+    }
+
+    private fun nextVerse() {
+        currentVerse = verseIterator.next()
+        currentVerseWords = currentVerse.getWords()
+        wordIndex = 0
+        charIndex = 0
+    }
+
+    private fun currentWord() = currentVerseWords[wordIndex]
+    override fun next(): Char {
+        val isLastCharInWord = charIndex == currentWord().length - 1
+        val isLastWord = wordIndex == currentVerseWords.size-1
+        val isLastCharInVerse = isLastWord && isLastCharInWord
+        if (wordIndex == 0 && charIndex == 0) { // start of verse
+            onVerse(currentVerse)
+        }
+
+        val retVal = currentWord()[charIndex]
+
+        if (isLastCharInVerse) {
+            if (verseIterator.hasNext()) {
+                nextVerse()
+            } else {
+                theEnd = true
+            }
+
+        } else {
+            if (charIndex < currentWord().length - 1)
+                charIndex++
+            else {
+                wordIndex++
+                charIndex = 0
+                if (verseIterator.hasNext())
+                    onWord(currentWord())
+            }
+        }
+        return retVal
     }
 }
