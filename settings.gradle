@@ -1,3 +1,17 @@
+plugins {
+    id("com.gradle.enterprise") version("3.15.1")
+}
+
+gradleEnterprise {
+    if (System.getenv("CI") != null) {
+        buildScan {
+            publishAlways()
+            termsOfServiceUrl = "https://gradle.com/terms-of-service"
+            termsOfServiceAgree = "yes"
+        }
+    }
+}
 
 rootProject.name = 'tanach-bible-kotlin'
 include('tanach-bible-api', 'tanach-bible-json', 'playground', 'uxlc-xml-json-conversion')
+
