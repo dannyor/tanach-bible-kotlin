@@ -115,7 +115,7 @@ fun main() {
     )
 
     val findCombinations = false
-    val v = VerseForWord(bible, "נוה", findCombinations, SearchType.ENDS)
+    val v = VerseForWord(bible, "חבר", findCombinations, SearchType.ENDS)
     val result = v.run()
     val sb = StringBuilder()
 

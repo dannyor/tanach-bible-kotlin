@@ -150,9 +150,6 @@ class CharacterIterator(
     }
 
     override fun hasNext(): Boolean {
-//        if (wordIndex < currentVerseWords.size) return true
-//        if (charIndex < currentVerseWords.last().length) return true
-//        if (!verseIterator.hasNext()) return false
         return !theEnd
     }
 
