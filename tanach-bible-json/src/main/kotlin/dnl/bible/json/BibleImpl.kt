@@ -1,7 +1,9 @@
 package dnl.bible.json
 
 import dnl.bible.api.BibleBook
-import dnl.bible.api.*
+import dnl.bible.api.Verse
+import dnl.bible.api.VerseLocation
+import dnl.bible.api.verseIterator
 
 class BibleImpl(val delegate: SerializableBible) : dnl.bible.api.Bible {
     override fun getBook(book: BibleBook): dnl.bible.api.Book {
@@ -27,7 +29,7 @@ class BookImpl(val delegate: SerializableBook) : dnl.bible.api.Book {
     }
 
     override fun getChapter(index: Int): dnl.bible.api.Chapter {
-        return ChapterImpl(this, index, delegate.chapters[index-1])
+        return ChapterImpl(this, index, delegate.chapters[index - 1])
     }
 }
 
@@ -52,11 +54,12 @@ class ChapterImpl(
         return delegate.verses
     }
 
-    override fun getNumOfVerses():Int {
+    override fun getNumOfVerses(): Int {
         return delegate.verses.size
     }
 
     override fun getVerse(index: Int): Verse {
+        require(index >= 1 && index <= delegate.verses.size)
         return VerseImpl(delegate.verses[index-1], this, VerseLocation(parentBook.getBookEnum(), chapterIndex, index))
     }
 }

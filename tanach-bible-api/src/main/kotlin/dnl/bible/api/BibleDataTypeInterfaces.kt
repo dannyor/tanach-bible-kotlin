@@ -72,6 +72,10 @@ interface Chapter {
     fun getNumOfVerses(): Int
     fun getAllVerses(): List<Verse>
     fun getAllVersesStrings(): List<String>
+
+    /**
+     *@param index 1 based index
+     */
     fun getVerse(index: Int): Verse
 
     fun asVerseRange(): VerseRange {
