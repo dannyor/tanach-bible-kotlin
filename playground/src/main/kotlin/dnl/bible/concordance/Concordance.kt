@@ -5,6 +5,7 @@ package dnl.bible.concordance
 import dnl.bible.api.BibleBook
 import dnl.bible.api.Bible
 import dnl.bible.api.Verse
+import dnl.bible.api.toStringHeb
 import dnl.bible.json.BibleLoader
 import org.slf4j.LoggerFactory
 import java.io.File
