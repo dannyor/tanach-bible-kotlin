@@ -1,6 +1,7 @@
 package dnl.uxlc.xml.xstream
 
 import dnl.bible.api.HebrewCharacterUtils
+import dnl.bible.api.HebrewChars
 import java.lang.StringBuilder
 
 interface WordProcessing {
@@ -32,7 +33,7 @@ class OnlyHebrew : WordProcessing {
     override fun process(s: String): String {
         val sb = StringBuilder()
         for (c in s) {
-            if (HebrewCharacterUtils.isHebrewChar(c)) sb.append(c)
+            if (HebrewCharacterUtils.isHebrewChar(c) && c!= HebrewChars.SOF_PASUQ.char) sb.append(c)
         }
         return sb.toString()
     }

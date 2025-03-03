@@ -1,8 +1,8 @@
 package dnl.bible.json
 
 import dnl.bible.api.BibleBook
-import dnl.bible.api.HebrewNumberingSystem.Companion.parseHebrewString
 import dnl.bible.api.VerseLocation
+import dnl.bible.api.HebrewNumberingSystem.parseHebrewString
 
 object ToStringUtil {
     fun parseHebString( hebStr:String): VerseLocation {

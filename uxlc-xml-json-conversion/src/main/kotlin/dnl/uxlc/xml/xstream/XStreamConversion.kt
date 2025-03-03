@@ -7,9 +7,11 @@ import com.thoughtworks.xstream.annotations.XStreamOmitField
 import dnl.bible.api.BibleBook
 import dnl.uxlc.xml.XmlConversion
 import java.io.Reader
-import java.lang.StringBuilder
 
-class XStreamConversion(val wordProcessingStack: WordProcessingStack) : XmlConversion {
+class XStreamConversion(
+    val wordProcessingStack: WordProcessingStack,
+    val withNiqqudProcessingStack: WordProcessingStack
+) : XmlConversion {
     val assertionStack = WordAssertionStack(HasNonHebrewAssertion())
 
     override fun convert(reader: Reader, bibleBook: BibleBook): dnl.bible.json.SerializableBook {
@@ -20,7 +22,7 @@ class XStreamConversion(val wordProcessingStack: WordProcessingStack) : XmlConve
         return convert(root.tanach.books[0], bibleBook)
     }
 
-    fun convert(book: Book, bibleBook: BibleBook): dnl.bible.json.SerializableBook {
+    private fun convert(book: Book, bibleBook: BibleBook): dnl.bible.json.SerializableBook {
         val chapters = mutableListOf<dnl.bible.json.SerializableChapter>()
 
         var numOfVerses = 0
@@ -41,20 +43,31 @@ class XStreamConversion(val wordProcessingStack: WordProcessingStack) : XmlConve
         return result
     }
 
-    fun convert(chapter: Chapter, chapterIndex:Int): dnl.bible.json.SerializableChapter {
+    private fun convert(chapter: Chapter, chapterIndex: Int): dnl.bible.json.SerializableChapter {
         val verses = mutableListOf<String>()
+        val versesWithNiqqud = mutableListOf<String>()
         chapter.verses.forEachIndexed { verseIndex, verse ->
             val sb = StringBuilder()
+            val sbWithNiqqud = StringBuilder()
+
             verse.words.forEachIndexed { wordIndex, s ->
                 val newWord = wordProcessingStack.process(s)
+                val newWordWithNiqqud = withNiqqudProcessingStack.process(s)
+
                 assertionStack.applyAsserts(newWord, chapterIndex, verseIndex, wordIndex)
                 sb.append(newWord)
-                if(wordIndex < verse.words.size-1)
+                sbWithNiqqud.append(newWordWithNiqqud)
+
+                if (wordIndex < verse.words.size - 1){
                     sb.append(' ')
+                    sbWithNiqqud.append(' ')
+                }
             }
+
             verses.add(sb.toString())
+            versesWithNiqqud.add(sbWithNiqqud.toString())
         }
-        return dnl.bible.json.SerializableChapter(verses)
+        return dnl.bible.json.SerializableChapter(verses, versesWithNiqqud)
     }
 }
 

@@ -22,7 +22,8 @@ data class SerializableBook(
 
 @Serializable
 data class SerializableChapter(
-    val verses: List<String>
+    val verses: List<String>,
+    val versesWithNiqqud: List<String>
 ) {
     @kotlinx.serialization.Transient
     lateinit var parentBook: SerializableBook
@@ -35,5 +36,5 @@ data class SerializableChapter(
 data class SerializableWord(
 //    val fullText: String,
     val text: String,
-    val withPunctuation: String
+    val withNiqqud: String
 )

@@ -1,8 +1,18 @@
 package dnl.bible.api
 
-import dnl.bible.api.HebrewNumberingSystem.Companion.toHebrewString
+import dnl.bible.api.HebrewNumberingSystem.toHebrewString
 
-data class VerseLocation(val book: BibleBook, val chapterIndex: Int, val verseIndex: Int)
+data class VerseLocation(
+    val book: BibleBook,
+    val chapterIndex: Int,
+    val verseIndex: Int
+) {
+    init {
+        if(verseIndex == 0)
+            throw IllegalStateException()
+    }
+}
+
 data class WordLocation(val verseLocation: VerseLocation, val wordIndex: Int)
 
 /**
@@ -18,5 +28,5 @@ data class VerseRange(val start: VerseLocation, val end: VerseLocation) {
 fun VerseLocation.toStringHeb() =
     "[${book.hebrewName}:${chapterIndex.toHebrewString()}:${verseIndex.toHebrewString()}]"
 
-fun WordLocation.toStringEng()=
+fun WordLocation.toStringEng() =
     "[${verseLocation.book.englishName}:${verseLocation.chapterIndex}:${verseLocation.verseIndex}:${wordIndex}]"

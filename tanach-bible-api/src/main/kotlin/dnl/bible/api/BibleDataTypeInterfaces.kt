@@ -1,6 +1,5 @@
 package dnl.bible.api
 
-import dnl.bible.api.HebrewNumberingSystem.Companion.toHebrewString
 
 interface Tora {
     fun getHumash(humash: HumashEnum): Book
@@ -16,7 +15,7 @@ interface Parasha {
 interface Bible {
     fun getBook(book: BibleBook): Book
     fun getVerse(verseLocation: VerseLocation): Verse {
-        return getBook(verseLocation.book).getChapter(verseLocation.chapterIndex).getVerse(verseLocation.verseIndex - 1)
+        return getBook(verseLocation.book).getChapter(verseLocation.chapterIndex).getVerse(verseLocation.verseIndex)
     }
 
     fun getVerseRange(verseRange: VerseRange): Iterator<Verse> {
@@ -62,16 +61,14 @@ interface Book {
     fun lastChapter(): Chapter = getChapter(getNumOfChapters())
 }
 
-interface Humash : Book {
-
-}
+enum class TextDirective{SIMPLE, DIACRITICS}
 
 interface Chapter {
     fun getParent(): Book
     fun getIndex(): Int
     fun getNumOfVerses(): Int
     fun getAllVerses(): List<Verse>
-    fun getAllVersesStrings(): List<String>
+    fun getAllVersesStrings(directive: TextDirective=TextDirective.SIMPLE): List<String>
 
     /**
      *@param index 1 based index
@@ -89,12 +86,14 @@ interface Verse {
     fun getParent(): Chapter
     fun getParentBook(): Book = getParent().getParent()
     fun getIndex(): Int
-    fun getWords(): List<String>
-    fun getText(): String
+    fun getWords(directive: TextDirective=TextDirective.SIMPLE): List<String>
+    fun getText(directive: TextDirective=TextDirective.SIMPLE): String
 
     fun getLocation(): VerseLocation {
         return VerseLocation(getParent().getParent().getBookEnum(), getParent().getIndex(), getIndex())
     }
 }
+
+
 
 

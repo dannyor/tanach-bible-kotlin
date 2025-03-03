@@ -40,8 +40,8 @@ class ConcordanceFromBible(val bible: Bible): Concordance {
 }
 
 fun main() {
-    val bible = BibleLoader.loadJustLettersBible(
-        File("./uxlc-xml-json-conversion/json-output/uxlc-1.2/bible-just_letters-1.1.zip"))
+    val bible = BibleLoader.loadBible(
+        File("./uxlc-xml-json-conversion/json-output/uxlc-1.2/bible-1.2.zip"))
     val concordance = ConcordanceFromBible(bible)
     val result = concordance.find("אהבה")
     result.forEach {

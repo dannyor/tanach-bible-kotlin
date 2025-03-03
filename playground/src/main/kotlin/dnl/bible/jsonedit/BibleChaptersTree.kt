@@ -1,13 +1,10 @@
 package dnl.bible.jsonedit
 
-import dnl.bible.api.BibleBook
 import dnl.bible.api.Bible
+import dnl.bible.api.BibleBook
 import dnl.bible.api.Book
 import dnl.bible.api.Chapter
-import dnl.bible.api.HebrewNumberingSystem.Companion.toHebrewString
-import dnl.bible.json.CombinedBible
-import dnl.bible.json.CombinedBook
-import dnl.bible.json.CombinedChapter
+import dnl.bible.api.HebrewNumberingSystem.toHebrewString
 import javax.swing.JTree
 import javax.swing.event.TreeModelListener
 import javax.swing.tree.DefaultMutableTreeNode
@@ -16,27 +13,27 @@ import javax.swing.tree.TreeNode
 import javax.swing.tree.TreePath
 
 class BibleChaptersTree(
-    private val bible:CombinedBible
+    private val bible: Bible
     ) : JTree(BibleTreeModel(bible, DefaultMutableTreeNode(bible)))
 
 
-class BibleTreeModel(val bible:CombinedBible, val rootNode: TreeNode) : TreeModel {
+class BibleTreeModel(val bible:Bible, val rootNode: TreeNode) : TreeModel {
     override fun getRoot(): Any {
         return rootNode
     }
 
     override fun getChild(parent: Any?, index: Int): Any {
         if (parent == root) {
-            val book = bible.getBook(BibleBook.values()[index])
+            val book = bible.getBook(BibleBook.entries[index])
             return BookNode(book)
         }
         val bookNode = parent as BookNode
-        return ChapterNode(bookNode.book.getCombinedChapter(index+1)) // bible chapters are 1 based
+        return ChapterNode(bookNode.book.getChapter(index+1)) // bible chapters are 1 based
     }
 
     override fun getChildCount(parent: Any?): Int {
         if (parent == root) {
-            return BibleBook.values().size
+            return BibleBook.entries.size
         }
         val bookNode = parent as BookNode
         return bookNode.book.getNumOfChapters()
@@ -71,12 +68,12 @@ class BibleTreeModel(val bible:CombinedBible, val rootNode: TreeNode) : TreeMode
 
 }
 
-data class BookNode(val book: CombinedBook) : DefaultMutableTreeNode(book.getName()) {
+data class BookNode(val book: Book) : DefaultMutableTreeNode(book.getName()) {
     override fun toString(): String {
         return book.getHebrewName()
     }
 }
-data class ChapterNode(val chapter: CombinedChapter) : DefaultMutableTreeNode(chapter.getIndex()) {
+data class ChapterNode(val chapter: Chapter) : DefaultMutableTreeNode(chapter.getIndex()) {
     override fun toString(): String {
         return chapter.getIndex().toHebrewString()
     }

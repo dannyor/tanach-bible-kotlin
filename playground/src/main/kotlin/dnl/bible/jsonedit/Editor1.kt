@@ -1,16 +1,15 @@
 package dnl.bible.jsonedit
 
+import dnl.bible.api.Bible
 import dnl.bible.api.Chapter
+import dnl.bible.api.TextDirective
 import dnl.bible.json.BibleLoader
-import dnl.bible.json.CombinedBible
-import dnl.bible.json.CombinedChapter
 import java.awt.BorderLayout
 import java.awt.ComponentOrientation
 import java.awt.Dimension
 import java.awt.EventQueue
 import java.awt.event.ActionEvent
 import java.io.File
-import java.lang.IllegalArgumentException
 import java.util.logging.Level
 import java.util.logging.Logger
 import javax.swing.*
@@ -29,9 +28,9 @@ class Editor1 : JFrame("") {
 
     private val splitPane = JSplitPane()
     private val bibleChaptersTree = JTree()
-    lateinit var bible: CombinedBible
+    lateinit var bible: Bible
 
-    private lateinit var seletedChapter: CombinedChapter
+    private lateinit var seletedChapter: Chapter
 
     init {
         menuBar.add(fileMenu)
@@ -86,7 +85,7 @@ class Editor1 : JFrame("") {
         val returnValue = jfc.showOpenDialog(null)
         if (returnValue == JFileChooser.APPROVE_OPTION) {
             val selectedFile: File = jfc.selectedFile
-            System.out.println(selectedFile.getAbsolutePath())
+            println(selectedFile.absolutePath)
         }
     }
 
@@ -95,19 +94,19 @@ class Editor1 : JFrame("") {
     }
 
     fun openFile(file: File) {
-        val full = File(file.parentFile, "bible-nikud_and_teamim-1.1.zip")
+        val full = File(file.parentFile, "bible-1.2.zip")
         if (!full.exists()) {
             throw IllegalArgumentException()
         }
-        bible = BibleLoader.loadCombined(file, full)
+        bible = BibleLoader.loadBible(file)
         bibleChaptersTree.model = BibleTreeModel(bible, DefaultMutableTreeNode(bible))
     }
 
-    private fun getChapterAsText(chap: CombinedChapter): String {
+    private fun getChapterAsText(chap: Chapter): String {
         val sb = StringBuilder()
 
-        chap.getAllCombinedVerses().forEach {
-            sb.append(if (editorPanel.isFullSymbols()) it.getFullSymbolsText() else it.getLettersOnlyText())
+        chap.getAllVerses().forEach {
+            sb.append(if (editorPanel.isFullSymbols()) it.getText(TextDirective.DIACRITICS) else it.getText(TextDirective.SIMPLE))
             sb.append('\n')
         }
         return sb.toString()

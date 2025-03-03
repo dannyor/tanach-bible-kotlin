@@ -13,8 +13,8 @@ class BibleApiTest {
     companion object {
         lateinit var bible: Bible
         @BeforeAll @JvmStatic fun setup() {
-            bible = BibleLoader.loadJustLettersBible(
-                File("../uxlc-xml-json-conversion/json-output/uxlc-1.2/bible-just_letters-1.1.zip"))
+            bible = BibleLoader.loadBible(
+                File("../uxlc-xml-json-conversion/json-output/uxlc-1.2/bible-1.2.zip"))
         }
     }
 

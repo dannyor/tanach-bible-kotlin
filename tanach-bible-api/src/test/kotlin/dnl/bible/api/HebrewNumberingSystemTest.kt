@@ -1,7 +1,7 @@
 package dnl.bible.api
 
-import dnl.bible.api.HebrewNumberingSystem.Companion.parseHebrewString
-import dnl.bible.api.HebrewNumberingSystem.Companion.toHebrewString
+import dnl.bible.api.HebrewNumberingSystem.parseHebrewString
+import dnl.bible.api.HebrewNumberingSystem.toHebrewString
 import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*

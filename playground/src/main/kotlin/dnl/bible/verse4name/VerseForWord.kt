@@ -110,12 +110,12 @@ data class Result(val word: String, val matchingCombination: List<String>, val v
 
 
 fun main() {
-    val bible = BibleLoader.loadJustLettersBible(
-        File("./uxlc-xml-json-conversion/json-output/uxlc-1.2/bible-just_letters-1.1.zip")
+    val bible = BibleLoader.loadBible(
+        File("./uxlc-xml-json-conversion/json-output/uxlc-1.2/bible-1.2.zip")
     )
 
     val findCombinations = false
-    val v = VerseForWord(bible, "חבר", findCombinations, SearchType.ENDS)
+    val v = VerseForWord(bible, "עוקשי", findCombinations, SearchType.ACRONYM)
     val result = v.run()
     val sb = StringBuilder()
 

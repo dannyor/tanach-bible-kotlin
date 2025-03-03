@@ -15,15 +15,17 @@ import java.io.File
 import java.io.FileReader
 
 class XmlToJsonConversion(
-    val wordProcessingStack: WordProcessingStack,
-    val rootXmlDir: File,
-    val targetDir: File,
-    val fullBibleTargetBaseName:String) {
+    private val rootXmlDir: File,
+    private val targetDir: File,
+    private val fullBibleTargetBaseName:String) {
 
-    val logger = LoggerFactory.getLogger(javaClass)
+    private val wordProcessingStack = WordProcessingStack(OnlyHebrewLetters())
+    private val wordWithNiqqudProcessingStack = WordProcessingStack(OnlyHebrew())
 
-    fun getXmlFileForBook(bibleBook: BibleBook): File {
-        rootXmlDir.listFiles().forEach {
+    private val logger = LoggerFactory.getLogger(javaClass)
+
+    private fun getXmlFileForBook(bibleBook: BibleBook): File {
+        rootXmlDir.listFiles()!!.forEach {
             if (it.name.contains(bibleBook.englishName.replace(' ', '_'), true))
                 return it
         }
@@ -31,16 +33,16 @@ class XmlToJsonConversion(
     }
 
     fun processFullBible() {
-        logger.info("processFullBible(): target is $fullBibleTargetBaseName. wordProcessingStack=$wordProcessingStack")
+        logger.info("processFullBible(): target is $fullBibleTargetBaseName")
         val boox = mutableListOf<SerializableBook>()
-        BibleBook.values().forEach {
+        BibleBook.entries.forEach {
             val xmlFile = getXmlFileForBook(it)
             if (!xmlFile.exists()) {
                 println("No file for $it")
                 return@forEach
             }
             println("processing file: ${xmlFile.name}")
-            val xmlParser = XStreamConversion(wordProcessingStack)
+            val xmlParser = XStreamConversion(wordProcessingStack, wordWithNiqqudProcessingStack)
             val book = xmlParser.convert(FileReader(xmlFile), it) as SerializableBook
             boox.add(book)
         }
@@ -52,7 +54,7 @@ class XmlToJsonConversion(
 
         var archive = TFile(targetDir, "$fullBibleTargetBaseName.zip")
         archive.mkdir(false)
-        if (archive.isDirectory()) archive = TFile(archive, jsonFile.getName())
+        if (archive.isDirectory) archive = TFile(archive, jsonFile.getName())
         TFile(jsonFile).cp_rp(archive)
         TVFS.umount(archive)
         logger.info("Done.")
@@ -64,20 +66,11 @@ fun main() {
     val rootXmlDir = File("./uxlc-xml-json-conversion/xml-output/uxlc-1.2")
     val targetJsonDir = File("./uxlc-xml-json-conversion/json-output/uxlc-1.2")
 
-    targetJsonDir.listFiles().forEach { it.delete() }
+    targetJsonDir.listFiles()!!.forEach { it.delete() }
 
     XmlToJsonConversion(
-        WordProcessingStack(OnlyHebrewLetters()),
         rootXmlDir,
         targetJsonDir,
-        "bible-just_letters-1.1"
+        "bible-1.2"
     ).processFullBible()
-
-    XmlToJsonConversion(
-        WordProcessingStack(OnlyHebrew()),
-        rootXmlDir,
-        targetJsonDir,
-        "bible-nikud_and_teamim-1.1"
-    ).processFullBible()
-
 }
