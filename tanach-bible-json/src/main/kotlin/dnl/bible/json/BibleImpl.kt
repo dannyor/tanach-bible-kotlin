@@ -1,6 +1,7 @@
 package dnl.bible.json
 
 import dnl.bible.api.*
+import dnl.bible.api.Locations.newVerseLocation
 
 class BibleImpl(val delegate: SerializableBible) : Bible {
     override fun getBook(book: BibleBook): Book {
@@ -56,10 +57,10 @@ class ChapterImpl(
     }
 
     override fun getVerse(index: Int): Verse {
-        require(index >= 1 && index <= delegate.verses.size)
+        require(index >= 1 && index <= delegate.verses.size, { "index $index not in boundaries" })
         val text = delegate.verses[index - 1]
         val textWithNiqqud = delegate.versesWithNiqqud[index - 1]
-        return VerseImpl(text, textWithNiqqud, this, VerseLocation(parentBook.getBookEnum(), chapterIndex, index))
+        return VerseImpl(text, textWithNiqqud, this, newVerseLocation(parentBook.getBookEnum(), chapterIndex, index))
     }
 }
 
@@ -91,4 +92,5 @@ class VerseImpl(
         return "VerseImpl(verseText='$verseText', verseLocation=$verseLocation)"
     }
 
+    override fun getLocation() = verseLocation
 }

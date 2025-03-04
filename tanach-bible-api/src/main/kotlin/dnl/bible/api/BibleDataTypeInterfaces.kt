@@ -1,5 +1,7 @@
 package dnl.bible.api
 
+import dnl.bible.api.Locations.newVerseLocation
+
 
 interface Tora {
     fun getHumash(humash: HumashEnum): Book
@@ -49,8 +51,8 @@ interface Book {
      * Gets the whole book as VerseRange
      */
     fun asVerseRange(): VerseRange {
-        val firstVerse = VerseLocation(getBookEnum(), 1, 1)
-        val lastVerse = VerseLocation(getBookEnum(), getNumOfChapters(), lastChapter().getNumOfVerses())
+        val firstVerse = newVerseLocation(getBookEnum(), 1, 1)
+        val lastVerse = newVerseLocation(getBookEnum(), getNumOfChapters(), lastChapter().getNumOfVerses())
         return VerseRange(firstVerse, lastVerse)
     }
 
@@ -61,14 +63,14 @@ interface Book {
     fun lastChapter(): Chapter = getChapter(getNumOfChapters())
 }
 
-enum class TextDirective{SIMPLE, DIACRITICS}
+enum class TextDirective { SIMPLE, DIACRITICS }
 
 interface Chapter {
     fun getParent(): Book
     fun getIndex(): Int
     fun getNumOfVerses(): Int
     fun getAllVerses(): List<Verse>
-    fun getAllVersesStrings(directive: TextDirective=TextDirective.SIMPLE): List<String>
+    fun getAllVersesStrings(directive: TextDirective = TextDirective.SIMPLE): List<String>
 
     /**
      *@param index 1 based index
@@ -76,8 +78,8 @@ interface Chapter {
     fun getVerse(index: Int): Verse
 
     fun asVerseRange(): VerseRange {
-        val firstVerse = VerseLocation(getParent().getBookEnum(), getIndex(), 1)
-        val lastVerse = VerseLocation(getParent().getBookEnum(), getIndex(), getNumOfVerses())
+        val firstVerse = newVerseLocation(getParent().getBookEnum(), getIndex(), 1)
+        val lastVerse = newVerseLocation(getParent().getBookEnum(), getIndex(), getNumOfVerses())
         return VerseRange(firstVerse, lastVerse)
     }
 }
@@ -86,12 +88,9 @@ interface Verse {
     fun getParent(): Chapter
     fun getParentBook(): Book = getParent().getParent()
     fun getIndex(): Int
-    fun getWords(directive: TextDirective=TextDirective.SIMPLE): List<String>
-    fun getText(directive: TextDirective=TextDirective.SIMPLE): String
-
-    fun getLocation(): VerseLocation {
-        return VerseLocation(getParent().getParent().getBookEnum(), getParent().getIndex(), getIndex())
-    }
+    fun getWords(directive: TextDirective = TextDirective.SIMPLE): List<String>
+    fun getText(directive: TextDirective = TextDirective.SIMPLE): String
+    fun getLocation(): VerseLocation
 }
 
 

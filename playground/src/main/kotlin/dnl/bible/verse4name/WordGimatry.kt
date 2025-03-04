@@ -23,7 +23,7 @@ fun main() {
     val wordGimatry = WordGimatry(bible, "דניאל")
     wordGimatry.process()
     wordGimatry.results.forEach {
-        println("${it.word} - ${it.verseLocation.toStringHeb()}: \"${bible.getVerse(it.verseLocation).getText()}\"")
+        println("${it.word} - ${it.wordLocation.toStringHeb()}: \"${bible.getVerse(it.wordLocation).getText()}\"")
     }
 }
 

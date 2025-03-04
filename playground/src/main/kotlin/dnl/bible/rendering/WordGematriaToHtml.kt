@@ -1,6 +1,8 @@
 package dnl.bible.rendering
 
 import dnl.bible.TraversalResult
+import dnl.bible.api.TextDirective
+import dnl.bible.api.Verse
 import dnl.bible.api.toStringHeb
 import dnl.bible.json.BibleLoader
 import dnl.bible.verse4name.WordGimatry
@@ -36,7 +38,21 @@ fun main() {
                 h1 { +it.key }
                 ul {
                     it.value.forEach {
-                        li { +"${it.verseLocation.toStringHeb()}: ${bible.getVerse(it.verseLocation).getText()}" }
+                        val v = bible.getVerse(it.wordLocation)
+                        val words = v.getWords()
+                        li {
+                            +"${it.wordLocation.toStringHeb()}:"
+                            words.forEachIndexed { index, s ->
+                                if (index > 0) +" "
+                                if (index == it.wordLocation.wordIndex){
+                                    b { +s }
+                                }
+                                else {
+                                    +s
+                                }
+                            }
+                        }
+                        b { }
                     }
                 }
             }
@@ -47,5 +63,41 @@ fun main() {
     FileUtils.write(
         File("./products/results.html"),
         "<meta charset=\"utf-8\">\n$s",
-        Charset.forName("UTF-8"))
+        Charset.forName("UTF-8")
+    )
 }
+
+//fun Verse.getWordCharIndexes(wordIndex: Int, directive: TextDirective = TextDirective.SIMPLE): IntRange {
+//    val words = getWords(directive)
+//    var charIndex = 0
+//    for (i in 0 until wordIndex) {
+//        charIndex += (words[i].length)
+//    }
+//    charIndex += (wordIndex - 1)
+//    val start = charIndex
+//    val end = start + words[wordIndex].length
+//    return IntRange(start, end)
+//}
+
+fun Verse.markWord(wordIndex: Int, directive: TextDirective = TextDirective.SIMPLE, htmlMark: String): String {
+    val words = getWords(directive)
+    return StringBuilder().apply {
+        words.forEachIndexed { index, s ->
+            if (index > 0)
+                append(' ')
+            if (index == wordIndex) {
+                append('<')
+                append(htmlMark)
+                append('>')
+            }
+            append(s)
+            if (index == wordIndex) {
+                append('<')
+                append(htmlMark)
+                append('/')
+                append('>')
+            }
+        }
+    }.toString()
+}
+

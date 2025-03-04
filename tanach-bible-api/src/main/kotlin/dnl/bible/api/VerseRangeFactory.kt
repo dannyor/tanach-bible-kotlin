@@ -1,5 +1,6 @@
 package dnl.bible.api
 
+import dnl.bible.api.Locations.newVerseLocation
 import java.util.regex.Pattern
 
 object VerseRangeFactory {
@@ -9,15 +10,15 @@ object VerseRangeFactory {
         matcher.find()
         val book = BibleBook.byEnglishName(matcher.group(1))
         return VerseRange(
-            VerseLocation(book, matcher.group(2).toInt(), matcher.group(3).toInt()),
-            VerseLocation(book, matcher.group(4).toInt(), matcher.group(5).toInt())
+            newVerseLocation(book, matcher.group(2).toInt(), matcher.group(3).toInt()),
+            newVerseLocation(book, matcher.group(4).toInt(), matcher.group(5).toInt())
         )
     }
 
     fun newSingleChapterRange(book: Book, chapterIndex: Int): VerseRange {
         return VerseRange(
-            VerseLocation(book.getBookEnum(), chapterIndex, 1),
-            VerseLocation(book.getBookEnum(), chapterIndex, book.getChapter(chapterIndex).getNumOfVerses()),
+            newVerseLocation(book.getBookEnum(), chapterIndex, 1),
+            newVerseLocation(book.getBookEnum(), chapterIndex, book.getChapter(chapterIndex).getNumOfVerses()),
         )
     }
 }

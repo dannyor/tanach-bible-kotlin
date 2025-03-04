@@ -1,15 +1,12 @@
 package dnl.bible
 
-import dnl.bible.api.Bible
-import dnl.bible.api.BibleBook
-import dnl.bible.api.TextDirective
-import dnl.bible.api.VerseLocation
+import dnl.bible.api.*
 import org.slf4j.LoggerFactory
 
 data class TraversalResult(
     val word: String,
     val wordWithDiacritics: String,
-    val verseLocation: VerseLocation
+    val wordLocation: WordLocation
 )
 
 abstract class BibleWordTraversal(val bible: Bible) {
@@ -46,7 +43,13 @@ abstract class BibleWordTraversalWithResults(val bible: Bible) {
                 val wordsWithDiacritics = verse.getWords(TextDirective.DIACRITICS)
                 for (i in words.indices) {
                     if (traverseWord(words[i], wordsWithDiacritics[i], verse.getLocation())) {
-                        results.add(TraversalResult(words[i], wordsWithDiacritics[i], verse.getLocation()))
+                        results.add(
+                            TraversalResult(
+                                words[i],
+                                wordsWithDiacritics[i],
+                                verse.getLocation().wordLocation(i)
+                            )
+                        )
                     }
                 }
             }

@@ -2,18 +2,37 @@ package dnl.bible.api
 
 import dnl.bible.api.HebrewNumberingSystem.toHebrewString
 
-data class VerseLocation(
-    val book: BibleBook,
-    val chapterIndex: Int,
+
+interface VerseLocation {
+    val book: BibleBook
+    val chapterIndex: Int
     val verseIndex: Int
-) {
+}
+
+interface WordLocation : VerseLocation {
+    val wordIndex: Int
+}
+
+internal data class BasicVerseLocation(
+    override val book: BibleBook,
+    override val chapterIndex: Int,
+    override val verseIndex: Int
+) : VerseLocation {
     init {
-        if(verseIndex == 0)
-            throw IllegalStateException()
+        require(verseIndex > 0)
     }
 }
 
-data class WordLocation(val verseLocation: VerseLocation, val wordIndex: Int)
+internal data class BasicWordLocation(
+    override val book: BibleBook,
+    override val chapterIndex: Int,
+    override val verseIndex: Int,
+    override val wordIndex: Int
+) : WordLocation {
+    init {
+        require(verseIndex > 0)
+    }
+}
 
 /**
  * Describes an inclusive range of verses.
@@ -25,8 +44,27 @@ data class VerseRange(val start: VerseLocation, val end: VerseLocation) {
     }
 }
 
+object Locations {
+
+    fun newVerseLocation(book: BibleBook, chapterIndex: Int, verseIndex: Int): VerseLocation {
+        return BasicVerseLocation(book, chapterIndex, verseIndex)
+    }
+
+    fun newWordLocation(book: BibleBook, chapterIndex: Int, verseIndex: Int, wordIndex: Int): WordLocation {
+        return BasicWordLocation(book, chapterIndex, verseIndex, wordIndex)
+    }
+
+    fun newWordLocation(verseLocation: VerseLocation, wordIndex: Int): WordLocation {
+        return BasicWordLocation(verseLocation.book, verseLocation.chapterIndex, verseLocation.verseIndex, wordIndex)
+    }
+}
+
+fun VerseLocation.wordLocation(wordIndex: Int): WordLocation {
+    return Locations.newWordLocation(this, wordIndex)
+}
+
 fun VerseLocation.toStringHeb() =
     "[${book.hebrewName}:${chapterIndex.toHebrewString()}:${verseIndex.toHebrewString()}]"
 
-fun WordLocation.toStringEng() =
-    "[${verseLocation.book.englishName}:${verseLocation.chapterIndex}:${verseLocation.verseIndex}:${wordIndex}]"
+//fun WordLocation.toStringEng() =
+//    "[${book.englishName}:${chapterIndex}:${verseIndex}:${wordIndex}]"
