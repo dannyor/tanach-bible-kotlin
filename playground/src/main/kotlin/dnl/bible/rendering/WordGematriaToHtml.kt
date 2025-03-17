@@ -12,6 +12,7 @@ import org.apache.commons.io.FileUtils
 import java.io.File
 import java.nio.charset.Charset
 
+
 class WordGematriaToHtml {
 }
 
@@ -44,15 +45,13 @@ fun main() {
                             +"${it.wordLocation.toStringHeb()}:"
                             words.forEachIndexed { index, s ->
                                 if (index > 0) +" "
-                                if (index == it.wordLocation.wordIndex){
+                                if (index == it.wordLocation.wordIndex) {
                                     b { +s }
-                                }
-                                else {
+                                } else {
                                     +s
                                 }
                             }
                         }
-                        b { }
                     }
                 }
             }
@@ -60,12 +59,15 @@ fun main() {
         }
     }.toString().trim()
 
+    val file = File("./products/results.html")
     FileUtils.write(
-        File("./products/results.html"),
+        file,
         "<meta charset=\"utf-8\">\n$s",
         Charset.forName("UTF-8")
     )
+    //HtmlToPdf.convert(s, File("./products/results.pdf"))
 }
+
 
 //fun Verse.getWordCharIndexes(wordIndex: Int, directive: TextDirective = TextDirective.SIMPLE): IntRange {
 //    val words = getWords(directive)
