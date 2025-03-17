@@ -9,59 +9,38 @@ interface VerseLocation {
     val verseIndex: Int
 }
 
+interface VerseInnerLocation {
+    val wordIndex: Int
+    val charIndex: Int
+}
+
+interface VerseWithCharLocations {
+    val verseLocation: VerseLocation
+    val innerLocations: List<VerseInnerLocation>
+}
+
 interface WordLocation : VerseLocation {
     val wordIndex: Int
 }
 
-internal data class BasicVerseLocation(
-    override val book: BibleBook,
-    override val chapterIndex: Int,
-    override val verseIndex: Int
-) : VerseLocation {
-    init {
-        require(verseIndex > 0)
-    }
+interface VerseRange {
+    val start: VerseLocation
+    val end: VerseLocation
 }
 
-internal data class BasicWordLocation(
-    override val book: BibleBook,
-    override val chapterIndex: Int,
-    override val verseIndex: Int,
-    override val wordIndex: Int
-) : WordLocation {
-    init {
-        require(verseIndex > 0)
-    }
+interface VerseRangeFactory {
+    fun newVerseRange(str: String): VerseRange
+    fun newSingleChapterRange(book: Book, chapterIndex: Int): VerseRange
 }
 
-/**
- * Describes an inclusive range of verses.
- */
-data class VerseRange(val start: VerseLocation, val end: VerseLocation) {
-    init {
-        if (start.book != end.book)
-            throw IllegalArgumentException("Ranges are allowed only on the same book")
-    }
+object DelegatingRangeFactory : VerseRangeFactory {
+    lateinit var delegate: VerseRangeFactory
+    override fun newVerseRange(str: String) = delegate.newVerseRange(str)
+
+    override fun newSingleChapterRange(book: Book, chapterIndex: Int) =
+        delegate.newSingleChapterRange(book, chapterIndex)
 }
 
-object Locations {
-
-    fun newVerseLocation(book: BibleBook, chapterIndex: Int, verseIndex: Int): VerseLocation {
-        return BasicVerseLocation(book, chapterIndex, verseIndex)
-    }
-
-    fun newWordLocation(book: BibleBook, chapterIndex: Int, verseIndex: Int, wordIndex: Int): WordLocation {
-        return BasicWordLocation(book, chapterIndex, verseIndex, wordIndex)
-    }
-
-    fun newWordLocation(verseLocation: VerseLocation, wordIndex: Int): WordLocation {
-        return BasicWordLocation(verseLocation.book, verseLocation.chapterIndex, verseLocation.verseIndex, wordIndex)
-    }
-}
-
-fun VerseLocation.wordLocation(wordIndex: Int): WordLocation {
-    return Locations.newWordLocation(this, wordIndex)
-}
 
 fun VerseLocation.toStringHeb() =
     "[${book.hebrewName}:${chapterIndex.toHebrewString()}:${verseIndex.toHebrewString()}]"

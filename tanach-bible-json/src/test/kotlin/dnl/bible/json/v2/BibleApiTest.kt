@@ -1,9 +1,9 @@
 package dnl.bible.json.v2
 
-import dnl.bible.api.BibleBook
-import dnl.bible.api.VerseRangeFactory
 import dnl.bible.api.Bible
+import dnl.bible.api.BibleBook
 import dnl.bible.json.BibleLoader
+import dnl.bible.json.VerseRangeFactoryImpl
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
@@ -12,9 +12,13 @@ import java.io.File
 class BibleApiTest {
     companion object {
         lateinit var bible: Bible
-        @BeforeAll @JvmStatic fun setup() {
+
+        @BeforeAll
+        @JvmStatic
+        fun setup() {
             bible = BibleLoader.loadBible(
-                File("../uxlc-xml-json-conversion/json-output/uxlc-1.2/bible-1.2.zip"))
+                File("../uxlc-xml-json-conversion/json-output/uxlc-1.2/bible-1.2.zip")
+            )
         }
     }
 
@@ -27,7 +31,7 @@ class BibleApiTest {
     @Test
     fun testChapterRange() {
         val book = bible.getBook(BibleBook.DANIEL)
-        val range = VerseRangeFactory.newSingleChapterRange(book, 1)
+        val range = VerseRangeFactoryImpl.newSingleChapterRange(book, 1)
         val iterator = bible.getVerseRange(range)
         val verseList = iterator.asSequence().toList()
         assertEquals(21, verseList.size)
@@ -48,11 +52,14 @@ class BibleApiTest {
 
     @Test
     fun testWithRangeIterator() {
-        val iterator = bible.getVerseRange(VerseRangeFactory.newVerseRange("Numbers 1:1-1:5"))
+        val iterator = bible.getVerseRange(VerseRangeFactoryImpl.newVerseRange("Numbers 1:1-1:5"))
         val verses = iterator.asSequence().toList()
         assertEquals(1, verses[0].getParent().getIndex())
         assertEquals(1, verses[0].getIndex())
-        assertEquals("וידבר יהוה אל משה במדבר סיני באהל מועד באחד לחדש השני בשנה השנית לצאתם מארץ מצרים לאמר", verses[0].getText())
+        assertEquals(
+            "וידבר יהוה אל משה במדבר סיני באהל מועד באחד לחדש השני בשנה השנית לצאתם מארץ מצרים לאמר",
+            verses[0].getText()
+        )
 
         assertEquals(1, verses[4].getParent().getIndex())
         assertEquals(5, verses[4].getIndex())

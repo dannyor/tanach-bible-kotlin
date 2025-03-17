@@ -1,9 +1,8 @@
 package dnl.bible.json
 
 import dnl.bible.api.BibleBook
-import dnl.bible.api.Locations.newVerseLocation
-import dnl.bible.api.VerseLocation
 import dnl.bible.api.toStringHeb
+import dnl.bible.json.Locations.newVerseLocation
 import org.junit.jupiter.api.Test
 
 internal class ToStringUtilTest {

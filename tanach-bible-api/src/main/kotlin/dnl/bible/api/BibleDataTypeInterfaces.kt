@@ -1,8 +1,5 @@
 package dnl.bible.api
 
-import dnl.bible.api.Locations.newVerseLocation
-
-
 interface Tora {
     fun getHumash(humash: HumashEnum): Book
     fun getParasha(parasha: ParashaEnum): Parasha
@@ -50,11 +47,7 @@ interface Book {
     /**
      * Gets the whole book as VerseRange
      */
-    fun asVerseRange(): VerseRange {
-        val firstVerse = newVerseLocation(getBookEnum(), 1, 1)
-        val lastVerse = newVerseLocation(getBookEnum(), getNumOfChapters(), lastChapter().getNumOfVerses())
-        return VerseRange(firstVerse, lastVerse)
-    }
+    fun asVerseRange(): VerseRange
 
     fun getIterator(): Iterator<Verse> {
         return VerseRangeIterator(this, asVerseRange())
@@ -77,11 +70,7 @@ interface Chapter {
      */
     fun getVerse(index: Int): Verse
 
-    fun asVerseRange(): VerseRange {
-        val firstVerse = newVerseLocation(getParent().getBookEnum(), getIndex(), 1)
-        val lastVerse = newVerseLocation(getParent().getBookEnum(), getIndex(), getNumOfVerses())
-        return VerseRange(firstVerse, lastVerse)
-    }
+    fun asVerseRange(): VerseRange
 }
 
 interface Verse {

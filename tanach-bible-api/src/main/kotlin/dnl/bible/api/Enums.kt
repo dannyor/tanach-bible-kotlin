@@ -1,8 +1,7 @@
 package dnl.bible.api
 
 import dnl.bible.api.BibleBook.*
-import dnl.bible.api.VerseRangeFactory.newVerseRange
-import java.lang.IllegalArgumentException
+import dnl.bible.api.DelegatingRangeFactory.newVerseRange
 
 
 enum class BibleGroups(val groupName: String, vararg val books: BibleBook) {

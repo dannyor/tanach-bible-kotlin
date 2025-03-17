@@ -1,7 +1,7 @@
 package dnl.bible.json
 
 import dnl.bible.api.*
-import dnl.bible.api.Locations.newVerseLocation
+import dnl.bible.json.Locations.newVerseLocation
 
 class BibleImpl(val delegate: SerializableBible) : Bible {
     override fun getBook(book: BibleBook): Book {
@@ -28,6 +28,12 @@ class BookImpl(private val delegate: SerializableBook) : Book {
 
     override fun getChapter(index: Int): Chapter {
         return ChapterImpl(this, index, delegate.chapters[index - 1])
+    }
+
+    override fun asVerseRange(): VerseRange {
+        val firstVerse = Locations.newVerseLocation(getBookEnum(), 1, 1)
+        val lastVerse = Locations.newVerseLocation(getBookEnum(), getNumOfChapters(), lastChapter().getNumOfVerses())
+        return VerseRangeImpl(firstVerse, lastVerse)
     }
 }
 
@@ -60,7 +66,18 @@ class ChapterImpl(
         require(index >= 1 && index <= delegate.verses.size, { "index $index not in boundaries" })
         val text = delegate.verses[index - 1]
         val textWithNiqqud = delegate.versesWithNiqqud[index - 1]
-        return VerseImpl(text, textWithNiqqud, this, newVerseLocation(parentBook.getBookEnum(), chapterIndex, index))
+        return VerseImpl(
+            text,
+            textWithNiqqud,
+            this,
+            Locations.newVerseLocation(parentBook.getBookEnum(), chapterIndex, index)
+        )
+    }
+
+    override fun asVerseRange(): VerseRange {
+        val firstVerse = newVerseLocation(getParent().getBookEnum(), getIndex(), 1)
+        val lastVerse = newVerseLocation(getParent().getBookEnum(), getIndex(), getNumOfVerses())
+        return VerseRangeImpl(firstVerse, lastVerse)
     }
 }
 
