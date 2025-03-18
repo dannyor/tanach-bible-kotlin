@@ -4,11 +4,15 @@ plugins {
 }
 
 dependencies {
-    api project(':tanach-bible-json')
+    implementation project(':tnc-queries')
     implementation 'commons-io:commons-io:2.14.0'
     implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1'
+    implementation 'ch.qos.logback:logback-classic:1.4.12'
     implementation 'com.google.guava:guava:33.4.0-jre'
-    implementation 'org.slf4j:slf4j-api:2.0.17'
+    implementation 'com.github.xmlet:htmlflow:4.0'
+
+
+    implementation "org.jetbrains.kotlinx:kotlinx-html-jvm:0.12.0"
 
 }
 
