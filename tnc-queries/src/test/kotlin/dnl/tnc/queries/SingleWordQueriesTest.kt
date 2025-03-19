@@ -8,7 +8,8 @@ class SingleWordQueriesTest {
 
     @Test
     fun testWordGimatria(){
-        val groupedWordResults = SingleWordQueries().queryForSameGimatria(bible, "סופ")
-        println(json.encodeToString(groupedWordResults))
+        val groupedWordResults = SingleWordQueries().queryForSameGimatria(bible, "שלום")
+        //println(json.encodeToString(groupedWordResults))
+        println(ToString.toString(groupedWordResults))
     }
 }
