@@ -5,13 +5,10 @@ plugins {
 
 dependencies {
     api project(':tanach-bible-json')
-    implementation 'commons-io:commons-io:2.14.0'
-    implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1'
-    implementation 'com.google.guava:guava:33.4.0-jre'
-    implementation 'org.slf4j:slf4j-api:2.0.17'
+    testImplementation project(':tests-common')
+    implementation "commons-io:commons-io:$commons_io_version"
+    implementation "com.google.guava:guava:$guava_version"
+    implementation "org.slf4j:slf4j-api:$slf4j_version"
 
 }
 
-repositories {
-    mavenCentral()
-}

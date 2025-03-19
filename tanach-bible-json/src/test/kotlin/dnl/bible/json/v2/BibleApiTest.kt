@@ -2,8 +2,8 @@ package dnl.bible.json.v2
 
 import dnl.bible.api.Bible
 import dnl.bible.api.BibleBook
+import dnl.bible.api.VerseRangeFactory
 import dnl.bible.json.BibleLoader
-import dnl.bible.json.VerseRangeFactoryImpl
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
@@ -31,7 +31,7 @@ class BibleApiTest {
     @Test
     fun testChapterRange() {
         val book = bible.getBook(BibleBook.DANIEL)
-        val range = VerseRangeFactoryImpl.newSingleChapterRange(book, 1)
+        val range = VerseRangeFactory.newSingleChapterRange(book, 1)
         val iterator = bible.getVerseRange(range)
         val verseList = iterator.asSequence().toList()
         assertEquals(21, verseList.size)
@@ -52,7 +52,7 @@ class BibleApiTest {
 
     @Test
     fun testWithRangeIterator() {
-        val iterator = bible.getVerseRange(VerseRangeFactoryImpl.newVerseRange("Numbers 1:1-1:5"))
+        val iterator = bible.getVerseRange(VerseRangeFactory.newVerseRange("Numbers 1:1-1:5"))
         val verses = iterator.asSequence().toList()
         assertEquals(1, verses[0].getParent().getIndex())
         assertEquals(1, verses[0].getIndex())

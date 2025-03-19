@@ -4,6 +4,7 @@ plugins {
 }
 
 dependencies {
+    testImplementation project(':tests-common')
     implementation project(':tnc-queries')
     implementation 'commons-io:commons-io:2.14.0'
     implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1'

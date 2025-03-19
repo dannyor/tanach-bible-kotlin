@@ -39,10 +39,10 @@ fun main() {
                 h1 { +it.key }
                 ul {
                     it.value.forEach {
-                        val v = bible.getVerse(it.wordLocation)
+                        val v = bible.getVerse(it.wordLocation.verseLocation)
                         val words = v.getWords()
                         li {
-                            +"${it.wordLocation.toStringHeb()}:"
+                            +"${it.wordLocation.verseLocation.toStringHeb()}:"
                             words.forEachIndexed { index, s ->
                                 if (index > 0) +" "
                                 if (index == it.wordLocation.wordIndex) {

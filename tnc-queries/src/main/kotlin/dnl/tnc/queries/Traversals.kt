@@ -1,7 +1,6 @@
 package dnl.tnc.queries
 
 import dnl.bible.api.*
-import dnl.bible.json.wordLocation
 import org.slf4j.LoggerFactory
 
 
@@ -41,5 +40,23 @@ class GenericVisitorWithResults(val condition: (word: String) -> Boolean) : Word
                 )
             )
         }
+    }
+
+    fun getGroupedResults(): GroupedWordResults {
+        val groupedByWord: MutableMap<String, MutableList<WordResult>> =
+            results.groupByTo(mutableMapOf()) { it.wordWithDiacritics }
+        val groupedResults = mutableListOf<WordResults>()
+        groupedByWord.values.forEach { listOfWordResult ->
+            val locations: List<WordLocation> = listOfWordResult.map { it.wordLocation }
+            groupedResults.add(
+                WordResults(
+                    listOfWordResult[0].word,
+                    listOfWordResult[0].wordWithDiacritics,
+                    locations
+                )
+            )
+        }
+        val totalFound = groupedResults.sumOf { it.wordLocations.size }
+        return GroupedWordResults(totalFound, groupedResults)
     }
 }

@@ -13,7 +13,7 @@ class VerseIterationTest {
     @Test
     fun testIterationSameChapter() {
         val book = bible.getBook(BibleBook.DANIEL)
-        val range = VerseRangeFactoryImpl.newSingleChapterRange(book, 1)
+        val range = VerseRangeFactory.newSingleChapterRange(book, 1)
 
     }
 

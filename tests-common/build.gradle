@@ -1,0 +1,9 @@
+plugins {
+    id 'proj.kotlin-common-conventions'
+}
+
+dependencies {
+    api project(':tanach-bible-json')
+    implementation "commons-io:commons-io:$commons_io_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlinx_serialization_json_version"
+}

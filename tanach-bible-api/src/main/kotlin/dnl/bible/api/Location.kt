@@ -1,12 +1,20 @@
 package dnl.bible.api
 
 import dnl.bible.api.HebrewNumberingSystem.toHebrewString
+import kotlinx.serialization.Serializable
 
 
-interface VerseLocation {
-    val book: BibleBook
-    val chapterIndex: Int
+@Serializable
+data class VerseLocation(
+    val book: BibleBook,
+    val chapterIndex: Int,
     val verseIndex: Int
+) {
+    init {
+        require(verseIndex > 0)
+    }
+
+    fun wordLocation(wordIndex: Int) = WordLocation(book, chapterIndex, verseIndex, wordIndex)
 }
 
 interface VerseInnerLocation {
@@ -19,28 +27,29 @@ interface VerseWithCharLocations {
     val innerLocations: List<VerseInnerLocation>
 }
 
-interface WordLocation : VerseLocation {
+@Serializable
+data class WordLocation(
+    val verseLocation: VerseLocation,
     val wordIndex: Int
+) {
+    constructor(
+        book: BibleBook,
+        chapterIndex: Int,
+        verseIndex: Int,
+        wordIndex: Int
+    ) : this(VerseLocation(book, chapterIndex, verseIndex), wordIndex)
 }
 
-interface VerseRange {
-    val start: VerseLocation
+@Serializable
+data class VerseRange(
+    val start: VerseLocation,
     val end: VerseLocation
+) {
+    init {
+        if (start.book != end.book)
+            throw IllegalArgumentException("Ranges are allowed only on the same book")
+    }
 }
-
-interface VerseRangeFactory {
-    fun newVerseRange(str: String): VerseRange
-    fun newSingleChapterRange(book: Book, chapterIndex: Int): VerseRange
-}
-
-object DelegatingRangeFactory : VerseRangeFactory {
-    lateinit var delegate: VerseRangeFactory
-    override fun newVerseRange(str: String) = delegate.newVerseRange(str)
-
-    override fun newSingleChapterRange(book: Book, chapterIndex: Int) =
-        delegate.newSingleChapterRange(book, chapterIndex)
-}
-
 
 fun VerseLocation.toStringHeb() =
     "[${book.hebrewName}:${chapterIndex.toHebrewString()}:${verseIndex.toHebrewString()}]"

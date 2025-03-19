@@ -24,3 +24,16 @@ data class WordResult(
     val wordWithDiacritics: String,
     val wordLocation: WordLocation
 )
+
+@Serializable
+data class WordResults(
+    val word: String,
+    val wordWithDiacritics: String,
+    val wordLocations: List<WordLocation>
+)
+
+@Serializable
+data class GroupedWordResults(
+    val totalNumOfResults:Int,
+    val results: List<WordResults>
+)

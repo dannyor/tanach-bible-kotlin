@@ -11,6 +11,6 @@ object ToStringUtil {
         val book = BibleBook.byHebrewName(splits[0].trim())
         val chapter = Int.parseHebrewString(splits[1].trim())
         val verse = Int.parseHebrewString(splits[2].trim())
-        return Locations.newVerseLocation(book, chapter, verse)
+        return VerseLocation(book, chapter, verse)
     }
 }

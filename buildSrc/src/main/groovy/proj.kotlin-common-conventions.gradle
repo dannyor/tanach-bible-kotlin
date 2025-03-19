@@ -10,11 +10,8 @@ repositories {
 group = "dnl.bible"
 
 dependencies {
-//    implementation platform('org.jetbrains.kotlin:kotlin-bom') // <4>
-
     implementation "org.apache.commons:commons-lang3:3.12.0"
-//    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.1' // <7>
-//    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine' // <8>
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlinx_serialization_json_version"
 }
 
 testing {

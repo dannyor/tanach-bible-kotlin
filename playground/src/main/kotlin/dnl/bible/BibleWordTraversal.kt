@@ -1,7 +1,6 @@
 package dnl.bible
 
 import dnl.bible.api.*
-import dnl.bible.json.wordLocation
 import org.slf4j.LoggerFactory
 
 data class TraversalResult(
