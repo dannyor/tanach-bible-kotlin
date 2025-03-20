@@ -8,15 +8,15 @@ interface TraversalWordVisitor {
     fun visitWord(word: String, wordWithDiacritics: String, verseLocation: VerseLocation, wordIndex: Int)
 }
 
-class BibleWordTraversal(
-    val bible: Bible
+class VersesWordTraversal(
+    private val verseIterator: Iterator<Verse>
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
     fun traverse(visitor: TraversalWordVisitor) {
         BibleBook.entries.forEach { bibleBook ->
             logger.info("process()ing $bibleBook")
-            bible.getBook(bibleBook).getIterator().forEach { verse ->
+            verseIterator.forEach { verse ->
                 val words = verse.getWords(TextDirective.SIMPLE)
                 val wordsWithDiacritics = verse.getWords(TextDirective.DIACRITICS)
                 for (i in words.indices) {

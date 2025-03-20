@@ -5,6 +5,7 @@ import dnl.bible.json.BibleLoader
 import dnl.tnc.assertTestsOutputDirExists
 import dnl.tnc.bible
 import dnl.tnc.queries.SingleWordQueries
+import dnl.tnc.queries.VerseQueries
 import dnl.tnc.testsOutputDir
 import org.apache.commons.io.FileUtils
 import java.io.File
@@ -12,7 +13,7 @@ import java.nio.charset.Charset
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 
-class WordGimatriaTest {
+class VerseForNameTest {
 
     @BeforeTest
     fun setup() {
@@ -21,10 +22,10 @@ class WordGimatriaTest {
 
     @Test
     fun test() {
-        val word = "דנ"
-        val groupedResults = SingleWordQueries().queryForSameGimatria(bible.verseIterator(), word)
+        val word = "דניאל"
+        val groupedResults = VerseQueries().verseForNameStartAndEnd(word, bible.verseIterator())
 
-        val s = GroupedWordResultsToHtml(word, groupedResults, bible).renderHTML(false)
+        val s = GroupedVerseResultsToHtml(word, groupedResults, bible).renderHTML(false)
 
         val file = File(testsOutputDir, "results.html")
         FileUtils.write(

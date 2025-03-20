@@ -1,6 +1,5 @@
 package dnl.tnc.queries
 
-import dnl.bible.api.Bible
 import dnl.bible.api.BibleBook
 import dnl.bible.api.Verse
 import dnl.bible.api.VerseInnerLocations
@@ -11,15 +10,15 @@ interface TraversalVerseVisitor {
     fun visitVerse(verse: Verse)
 }
 
-class BibleVerseTraversal(
-    private val bible: Bible
+class VerseTraversal(
+    private val verseIterator: Iterator<Verse>
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
     fun traverse(visitor: TraversalVerseVisitor) {
         BibleBook.entries.forEach { bibleBook ->
             logger.info("process()ing $bibleBook")
-            bible.getBook(bibleBook).getIterator().forEach { verse ->
+            verseIterator.forEach { verse ->
                 visitor.visitVerse(verse)
             }
         }

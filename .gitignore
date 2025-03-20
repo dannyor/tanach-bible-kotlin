@@ -18,7 +18,7 @@
 /*/out/
 /*/build/
 /*/target/
-/tests-output/
+/*/tests-output/
 
 # IntelliJ - applied to all subtree below
 .gradle

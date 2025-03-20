@@ -1,14 +1,14 @@
 package dnl.tnc.queries
 
-import dnl.bible.api.Bible
 import dnl.bible.api.Gematria
+import dnl.bible.api.Verse
 
 class SingleWordQueries {
 
-    fun queryForSameGimatria(bible: Bible, rootWord: String): GroupedWordResults {
+    fun queryForSameGimatria(verseIterator: Iterator<Verse>, rootWord: String): GroupedWordResults {
         val gematriaOfRootWord = Gematria.gematriaOf(rootWord)
         val visitor = GenericWordVisitorWithResults { word: String -> Gematria.gematriaOf(word) == gematriaOfRootWord }
-        BibleWordTraversal(bible).traverse(visitor)
+        VersesWordTraversal(verseIterator).traverse(visitor)
         return visitor.getGroupedResults()
     }
 
