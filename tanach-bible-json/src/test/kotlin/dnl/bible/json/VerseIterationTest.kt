@@ -3,12 +3,8 @@ package dnl.bible.json
 import dnl.bible.api.*
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
-import java.io.File
 
 class VerseIterationTest {
-
-    val bible = BibleLoader.loadBible(
-        File("../uxlc-xml-json-conversion/json-output/uxlc-1.2/bible-1.2.zip"))
 
     @Test
     fun testIterationSameChapter() {

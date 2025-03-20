@@ -1,7 +1,7 @@
 package dnl.tnc.queries
 
 import dnl.bible.api.toStringHeb
-import dnl.tnc.bible
+import dnl.bible.json.bible
 
 object ToString {
     fun toString(groupedWordResults: GroupedWordResults): String {

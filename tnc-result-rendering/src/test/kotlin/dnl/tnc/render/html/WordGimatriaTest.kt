@@ -1,9 +1,8 @@
 package dnl.tnc.render.html
 
 import dnl.bible.api.verseIterator
-import dnl.bible.json.BibleLoader
+import dnl.bible.json.bible
 import dnl.tnc.assertTestsOutputDirExists
-import dnl.tnc.bible
 import dnl.tnc.queries.SingleWordQueries
 import dnl.tnc.testsOutputDir
 import org.apache.commons.io.FileUtils

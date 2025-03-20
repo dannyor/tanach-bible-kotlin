@@ -1,8 +1,7 @@
 package dnl.bible.verse4name
 
 import dnl.bible.api.*
-import dnl.bible.json.BibleLoader
-import java.io.File
+import dnl.bible.json.bible
 
 class ExactVerseForName(
     val bible: Bible, private val name: String
@@ -46,10 +45,6 @@ data class MatchedVerse(
 )
 
 fun main() {
-    val bible = BibleLoader.loadBible(
-        File("./uxlc-xml-json-conversion/json-output/uxlc-1.2/bible-1.2.zip")
-    )
-
     val exactVerseForName = ExactVerseForName(bible, "נוה")
     exactVerseForName.process()
     exactVerseForName.result.sortWith { v1, v2 ->

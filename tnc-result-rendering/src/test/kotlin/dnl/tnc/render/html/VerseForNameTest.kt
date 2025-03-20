@@ -1,9 +1,8 @@
 package dnl.tnc.render.html
 
 import dnl.bible.api.verseIterator
-import dnl.bible.json.BibleLoader
+import dnl.bible.json.bible
 import dnl.tnc.assertTestsOutputDirExists
-import dnl.tnc.bible
 import dnl.tnc.queries.SingleWordQueries
 import dnl.tnc.queries.VerseQueries
 import dnl.tnc.testsOutputDir
@@ -22,7 +21,7 @@ class VerseForNameTest {
 
     @Test
     fun test() {
-        val word = "דניאל"
+        val word = "אילת"
         val groupedResults = VerseQueries().verseForNameStartAndEnd(word, bible.verseIterator())
 
         val s = GroupedVerseResultsToHtml(word, groupedResults, bible).renderHTML(false)

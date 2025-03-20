@@ -1,27 +1,12 @@
 package dnl.bible.json.v2
 
-import dnl.bible.api.Bible
 import dnl.bible.api.BibleBook
 import dnl.bible.api.VerseRangeFactory
-import dnl.bible.json.BibleLoader
+import dnl.bible.json.bible
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
-import java.io.File
 
 class BibleApiTest {
-    companion object {
-        lateinit var bible: Bible
-
-        @BeforeAll
-        @JvmStatic
-        fun setup() {
-            bible = BibleLoader.loadBible(
-                File("../uxlc-xml-json-conversion/json-output/uxlc-1.2/bible-1.2.zip")
-            )
-        }
-    }
-
     @Test
     fun testBibleBookEnum() {
         val bbook = BibleBook.byEnglishName("Numbers")

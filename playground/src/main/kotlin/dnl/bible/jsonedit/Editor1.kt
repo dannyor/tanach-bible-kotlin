@@ -3,7 +3,6 @@ package dnl.bible.jsonedit
 import dnl.bible.api.Bible
 import dnl.bible.api.Chapter
 import dnl.bible.api.TextDirective
-import dnl.bible.json.BibleLoader
 import java.awt.BorderLayout
 import java.awt.ComponentOrientation
 import java.awt.Dimension
@@ -98,7 +97,6 @@ class Editor1 : JFrame("") {
         if (!full.exists()) {
             throw IllegalArgumentException()
         }
-        bible = BibleLoader.loadBible(file)
         bibleChaptersTree.model = BibleTreeModel(bible, DefaultMutableTreeNode(bible))
     }
 

@@ -1,7 +1,7 @@
 package dnl.tnc.queries
 
 import dnl.bible.api.verseIterator
-import dnl.tnc.bible
+import dnl.bible.json.bible
 import kotlin.test.Test
 
 class SingleWordQueriesTest {

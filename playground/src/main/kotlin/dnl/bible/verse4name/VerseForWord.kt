@@ -1,7 +1,7 @@
 package dnl.bible.verse4name
 
 import dnl.bible.api.*
-import dnl.bible.json.BibleLoader
+import dnl.bible.json.bible
 import java.io.File
 
 enum class SearchType { ACRONYM, ENDS }
@@ -110,10 +110,6 @@ data class Result(val word: String, val matchingCombination: List<String>, val v
 
 
 fun main() {
-    val bible = BibleLoader.loadBible(
-        File("./uxlc-xml-json-conversion/json-output/uxlc-1.2/bible-1.2.zip")
-    )
-
     val findCombinations = false
     val v = VerseForWord(bible, "עוקשי", findCombinations, SearchType.ACRONYM)
     val result = v.run()

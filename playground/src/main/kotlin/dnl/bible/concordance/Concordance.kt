@@ -2,13 +2,12 @@
 
 package dnl.bible.concordance
 
-import dnl.bible.api.BibleBook
 import dnl.bible.api.Bible
+import dnl.bible.api.BibleBook
 import dnl.bible.api.Verse
 import dnl.bible.api.toStringHeb
-import dnl.bible.json.BibleLoader
+import dnl.bible.json.bible
 import org.slf4j.LoggerFactory
-import java.io.File
 
 interface Concordance {
     fun find(word:String) : List<Verse>
@@ -40,8 +39,6 @@ class ConcordanceFromBible(val bible: Bible): Concordance {
 }
 
 fun main() {
-    val bible = BibleLoader.loadBible(
-        File("./uxlc-xml-json-conversion/json-output/uxlc-1.2/bible-1.2.zip"))
     val concordance = ConcordanceFromBible(bible)
     val result = concordance.find("אהבה")
     result.forEach {

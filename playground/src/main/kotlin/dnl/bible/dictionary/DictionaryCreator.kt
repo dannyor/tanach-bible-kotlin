@@ -5,9 +5,8 @@ import dnl.bible.api.Bible
 import dnl.bible.api.BibleBook
 import dnl.bible.api.HebrewNumberingSystem.toHebrewString
 import dnl.bible.api.VerseLocation
-import dnl.bible.json.BibleLoader
+import dnl.bible.json.bible
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.apache.commons.io.FileUtils
 import java.io.File
@@ -23,9 +22,6 @@ class DictionaryCreator(bible: Bible) : BibleWordTraversal(bible) {
 }
 
 fun main() {
-    val bible =
-        BibleLoader.loadBible(File("./uxlc-xml-json-conversion/json-output/uxlc-1.2/bible-1.2.zip"))
-
     val dictionaryCreator = DictionaryCreator(bible)
     dictionaryCreator.process()
     println(dictionaryCreator.map.size)

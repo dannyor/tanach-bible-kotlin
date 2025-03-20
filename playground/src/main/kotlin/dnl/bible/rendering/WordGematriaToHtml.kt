@@ -4,7 +4,7 @@ import dnl.bible.TraversalResult
 import dnl.bible.api.TextDirective
 import dnl.bible.api.Verse
 import dnl.bible.api.toStringHeb
-import dnl.bible.json.BibleLoader
+import dnl.bible.json.bible
 import dnl.bible.verse4name.WordGimatry
 import kotlinx.html.*
 import kotlinx.html.stream.createHTML
@@ -18,9 +18,6 @@ class WordGematriaToHtml {
 
 
 fun main() {
-    val bible = BibleLoader.loadBible(
-        File("./uxlc-xml-json-conversion/json-output/uxlc-1.2/bible-1.2.zip")
-    )
     val word = "דניאל"
     val wordGimatry = WordGimatry(bible, word)
     wordGimatry.process()

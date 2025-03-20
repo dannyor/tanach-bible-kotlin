@@ -12,6 +12,6 @@ gradleEnterprise {
     }
 }
 
-rootProject.name = 'tanach-bible-kotlin'
+rootProject.name = 'tnc'
 include('tanach-bible-api', 'tanach-bible-json', 'playground', 'uxlc-xml-json-conversion', 'tnc-queries', 'tnc-result-rendering', 'tests-common')
 

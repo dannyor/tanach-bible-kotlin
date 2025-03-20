@@ -5,11 +5,10 @@ import dnl.bible.api.Bible
 import dnl.bible.api.HebrewCharacterUtils.Companion.isHebrewLetter
 import dnl.bible.api.HebrewCharacterUtils.Companion.isHebrewPunctuation
 import dnl.bible.api.VerseLocation
-import dnl.bible.json.BibleLoader
 import dnl.bible.json.SerializableWord
+import dnl.bible.json.bible
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.apache.commons.io.FileUtils
 import java.io.File
@@ -28,9 +27,6 @@ private val json = Json { prettyPrint = true }
 
 @ExperimentalSerializationApi
 fun main() {
-    val bible = BibleLoader.loadBible(
-        File("./uxlc-xml-json-conversion/json-output/uxlc-1.2/bible-1.2.zip")
-    )
     val wordCollector = WordCollector(bible)
     wordCollector.process()
     println(wordCollector.map.size)
