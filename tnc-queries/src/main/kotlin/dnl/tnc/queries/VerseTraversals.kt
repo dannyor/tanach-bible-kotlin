@@ -4,37 +4,33 @@ import dnl.bible.api.*
 import org.slf4j.LoggerFactory
 
 
-interface WordTraversalVisitor {
-    fun visitWord(word: String, wordWithDiacritics: String, verseLocation: VerseLocation, wordIndex: Int)
+interface TraversalVerseVisitor {
+    fun visitVerse(verse: Verse)
 }
 
-class BibleWordTraversal(
-    val bible: Bible
+class BibleVerseTraversal(
+    private val bible: Bible
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
-    fun traverse(visitor: WordTraversalVisitor) {
+    fun traverse(visitor: TraversalVerseVisitor) {
         BibleBook.entries.forEach { bibleBook ->
             logger.info("process()ing $bibleBook")
             bible.getBook(bibleBook).getIterator().forEach { verse ->
-                val words = verse.getWords(TextDirective.SIMPLE)
-                val wordsWithDiacritics = verse.getWords(TextDirective.DIACRITICS)
-                for (i in words.indices) {
-                    visitor.visitWord(words[i], wordsWithDiacritics[i], verse.getLocation(), i)
-                }
+                visitor.visitVerse(verse)
             }
         }
     }
 }
 
-class GenericVisitorWithResults(val condition: (word: String) -> Boolean) : WordTraversalVisitor {
-    val results = mutableListOf<WordResult>()
+class GenericVerseVisitorWithResults(val condition: (verse: Verse) -> Boolean) : TraversalVerseVisitor {
+    val results = mutableListOf<VerseResult>()
 
-    override fun visitWord(word: String, wordWithDiacritics: String, verseLocation: VerseLocation, wordIndex: Int) {
-        if (condition(word)) {
+    override fun visitVerse(verse: Verse) {
+        if (condition(verse)) {
             results.add(
-                WordResult(
-                    word,
+                VerseResult(
+                    verse.getLocation(),
                     wordWithDiacritics,
                     verseLocation.wordLocation(wordIndex)
                 )

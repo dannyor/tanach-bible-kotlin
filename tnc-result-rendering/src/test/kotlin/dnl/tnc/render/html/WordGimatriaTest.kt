@@ -9,6 +9,7 @@ import org.apache.commons.io.FileUtils
 import java.io.File
 import java.nio.charset.Charset
 import kotlin.test.BeforeTest
+import kotlin.test.Test
 
 class WordGimatriaTest {
 
@@ -17,8 +18,9 @@ class WordGimatriaTest {
         assertTestsOutputDirExists()
     }
 
+    @Test
     fun test() {
-        val word = "אילת"
+        val word = "דנ"
         val groupedResults = SingleWordQueries().queryForSameGimatria(bible, word)
 
         val s = GroupedWordResultsToHtml(word, groupedResults, bible).renderHTML(false)
