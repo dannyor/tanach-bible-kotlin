@@ -1,6 +1,9 @@
 package dnl.tnc.queries
 
-import dnl.bible.api.*
+import dnl.bible.api.Bible
+import dnl.bible.api.BibleBook
+import dnl.bible.api.Verse
+import dnl.bible.api.VerseInnerLocations
 import org.slf4j.LoggerFactory
 
 
@@ -24,35 +27,33 @@ class BibleVerseTraversal(
 }
 
 class GenericVerseVisitorWithResults(val condition: (verse: Verse) -> Boolean) : TraversalVerseVisitor {
-    val results = mutableListOf<VerseResult>()
+    val results = mutableListOf<VerseInnerLocations>()
 
     override fun visitVerse(verse: Verse) {
         if (condition(verse)) {
             results.add(
-                VerseResult(
+                VerseInnerLocations(
                     verse.getLocation(),
-                    wordWithDiacritics,
-                    verseLocation.wordLocation(wordIndex)
+                    listOf(),
+                    listOf()
                 )
             )
         }
     }
 
-    fun getGroupedResults(): GroupedWordResults {
-        val groupedByWord: MutableMap<String, MutableList<WordResult>> =
-            results.groupByTo(mutableMapOf()) { it.wordWithDiacritics }
-        val groupedResults = mutableListOf<WordResults>()
-        groupedByWord.values.forEach { listOfWordResult ->
-            val locations: List<WordLocation> = listOfWordResult.map { it.wordLocation }
+    fun getGroupedResults(): GroupedByBookVerseResults {
+        val groupedByBook: MutableMap<BibleBook, MutableList<VerseInnerLocations>> =
+            results.groupByTo(mutableMapOf()) { it.verseLocation.book }
+        val groupedResults = mutableListOf<VerseResultsInBook>()
+        groupedByBook.entries.forEach { entry ->
             groupedResults.add(
-                WordResults(
-                    listOfWordResult[0].word,
-                    listOfWordResult[0].wordWithDiacritics,
-                    locations
+                VerseResultsInBook(
+                    entry.key,
+                    entry.value
                 )
             )
         }
-        val totalFound = groupedResults.sumOf { it.wordLocations.size }
-        return GroupedWordResults(totalFound, groupedResults)
+        val totalFound = results.size
+        return GroupedByBookVerseResults(totalFound, groupedResults)
     }
 }

@@ -17,15 +17,12 @@ data class VerseLocation(
     fun wordLocation(wordIndex: Int) = WordLocation(book, chapterIndex, verseIndex, wordIndex)
 }
 
-interface VerseInnerLocation {
-    val wordIndex: Int
-    val charIndex: Int
-}
-
-interface VerseWithCharLocations {
-    val verseLocation: VerseLocation
-    val innerLocations: List<VerseInnerLocation>
-}
+@Serializable
+data class VerseInnerLocations(
+    val verseLocation: VerseLocation,
+    val wordIndexes: List<Int>,
+    val charIndexes: List<Int>
+)
 
 @Serializable
 data class WordLocation(
